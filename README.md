@@ -40,6 +40,7 @@
 | 文档处理 | Apache POI（Excel 导出） |
 | 工具库 | Lombok, Jackson, Hutool |
 | 构建工具 | Maven |
+| **小程序端** | **uni-app 3.x + Vue 3** |
 
 ---
 
@@ -198,6 +199,40 @@ mvn clean package -DskipTests
 # 运行
 java -jar target/dcss-*.jar
 ```
+
+---
+
+## 📱 小程序端
+
+本项目包含基于 uni-app 开发的小程序端，支持微信小程序、H5、APP等多端部署。
+
+### 快速启动小程序端
+
+```bash
+# 进入小程序目录
+cd miniapp
+
+# 安装依赖
+npm install
+
+# 运行到H5
+npm run dev:h5
+
+# 运行到微信小程序
+npm run dev:mp-weixin
+```
+
+### 小程序端功能
+
+- 用户登录/登出
+- 文件列表查看与上传
+- 待审核任务列表
+- 审核详情与提交
+- 文档分类查看
+- 数据概览与统计
+- 个人中心管理
+
+详细文档请查看：[miniapp/README.md](miniapp/README.md)
 
 ---
 

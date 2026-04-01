@@ -1,0 +1,5 @@
+<!-- Placeholder for tabbar icon -->
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" fill="#cccccc"/>
+  <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#666" font-size="24">🏠</text>
+</svg>

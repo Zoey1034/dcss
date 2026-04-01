@@ -1,0 +1,220 @@
+/* 全局通用样式 */
+
+/* 基础颜色 */
+$primary-color: #007AFF;
+$success-color: #4cd964;
+$warning-color: #ff9900;
+$error-color: #ff3b30;
+$text-color: #333;
+$text-gray: #666;
+$text-light: #999;
+$border-color: #e5e5e5;
+$bg-color: #f5f5f5;
+
+/* 间距 */
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 40rpx;
+
+/* 圆角 */
+$border-radius-sm: 8rpx;
+$border-radius-md: 12rpx;
+$border-radius-lg: 16rpx;
+
+/* 阴影 */
+$box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+
+/* 通用容器 */
+.container {
+  min-height: 100vh;
+  background-color: $bg-color;
+}
+
+/* 卡片样式 */
+.card {
+  background-color: #fff;
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+  margin: $spacing-md;
+  box-shadow: $box-shadow;
+}
+
+/* 列表项 */
+.list-item {
+  background-color: #fff;
+  padding: $spacing-md;
+  border-bottom: 1rpx solid $border-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+/* 文本样式 */
+.text-primary {
+  color: $primary-color;
+}
+
+.text-success {
+  color: $success-color;
+}
+
+.text-warning {
+  color: $warning-color;
+}
+
+.text-error {
+  color: $error-color;
+}
+
+.text-gray {
+  color: $text-gray;
+}
+
+.text-light {
+  color: $text-light;
+}
+
+/* 文本大小 */
+.text-xs {
+  font-size: 24rpx;
+}
+
+.text-sm {
+  font-size: 28rpx;
+}
+
+.text-md {
+  font-size: 32rpx;
+}
+
+.text-lg {
+  font-size: 36rpx;
+}
+
+.text-xl {
+  font-size: 40rpx;
+}
+
+/* Flex布局 */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* 间距工具类 */
+.mt-xs { margin-top: $spacing-xs; }
+.mt-sm { margin-top: $spacing-sm; }
+.mt-md { margin-top: $spacing-md; }
+.mt-lg { margin-top: $spacing-lg; }
+.mt-xl { margin-top: $spacing-xl; }
+
+.mb-xs { margin-bottom: $spacing-xs; }
+.mb-sm { margin-bottom: $spacing-sm; }
+.mb-md { margin-bottom: $spacing-md; }
+.mb-lg { margin-bottom: $spacing-lg; }
+.mb-xl { margin-bottom: $spacing-xl; }
+
+.ml-xs { margin-left: $spacing-xs; }
+.ml-sm { margin-left: $spacing-sm; }
+.ml-md { margin-left: $spacing-md; }
+.ml-lg { margin-left: $spacing-lg; }
+.ml-xl { margin-left: $spacing-xl; }
+
+.mr-xs { margin-right: $spacing-xs; }
+.mr-sm { margin-right: $spacing-sm; }
+.mr-md { margin-right: $spacing-md; }
+.mr-lg { margin-right: $spacing-lg; }
+.mr-xl { margin-right: $spacing-xl; }
+
+.pt-xs { padding-top: $spacing-xs; }
+.pt-sm { padding-top: $spacing-sm; }
+.pt-md { padding-top: $spacing-md; }
+.pt-lg { padding-top: $spacing-lg; }
+.pt-xl { padding-top: $spacing-xl; }
+
+.pb-xs { padding-bottom: $spacing-xs; }
+.pb-sm { padding-bottom: $spacing-sm; }
+.pb-md { padding-bottom: $spacing-md; }
+.pb-lg { padding-bottom: $spacing-lg; }
+.pb-xl { padding-bottom: $spacing-xl; }
+
+.pl-xs { padding-left: $spacing-xs; }
+.pl-sm { padding-left: $spacing-sm; }
+.pl-md { padding-left: $spacing-md; }
+.pl-lg { padding-left: $spacing-lg; }
+.pl-xl { padding-left: $spacing-xl; }
+
+.pr-xs { padding-right: $spacing-xs; }
+.pr-sm { padding-right: $spacing-sm; }
+.pr-md { padding-right: $spacing-md; }
+.pr-lg { padding-right: $spacing-lg; }
+.pr-xl { padding-right: $spacing-xl; }
+
+/* 按钮样式 */
+.btn {
+  display: inline-block;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-sm;
+  text-align: center;
+  font-size: 32rpx;
+  line-height: 1.5;
+  border: none;
+  background-color: $primary-color;
+  color: #fff;
+
+  &.btn-block {
+    display: block;
+    width: 100%;
+  }
+
+  &.btn-primary {
+    background-color: $primary-color;
+  }
+
+  &.btn-success {
+    background-color: $success-color;
+  }
+
+  &.btn-warning {
+    background-color: $warning-color;
+  }
+
+  &.btn-error {
+    background-color: $error-color;
+  }
+
+  &.btn-plain {
+    background-color: transparent;
+    border: 1rpx solid $primary-color;
+    color: $primary-color;
+  }
+}

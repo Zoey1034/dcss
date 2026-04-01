@@ -1,0 +1,97 @@
+{
+  "pages": [
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "文档分类系统"
+      }
+    },
+    {
+      "path": "pages/file-list/file-list",
+      "style": {
+        "navigationBarTitleText": "文件列表"
+      }
+    },
+    {
+      "path": "pages/file-upload/file-upload",
+      "style": {
+        "navigationBarTitleText": "上传文件"
+      }
+    },
+    {
+      "path": "pages/review/review",
+      "style": {
+        "navigationBarTitleText": "待审核列表"
+      }
+    },
+    {
+      "path": "pages/review-detail/review-detail",
+      "style": {
+        "navigationBarTitleText": "审核详情"
+      }
+    },
+    {
+      "path": "pages/classification/classification",
+      "style": {
+        "navigationBarTitleText": "文档分类"
+      }
+    },
+    {
+      "path": "pages/dashboard/dashboard",
+      "style": {
+        "navigationBarTitleText": "数据概览"
+      }
+    },
+    {
+      "path": "pages/profile/profile",
+      "style": {
+        "navigationBarTitleText": "个人中心"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "智能文档分类系统",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#007AFF",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/file-list/file-list",
+        "text": "文件",
+        "iconPath": "static/tabbar/file.png",
+        "selectedIconPath": "static/tabbar/file-active.png"
+      },
+      {
+        "pagePath": "pages/review/review",
+        "text": "审核",
+        "iconPath": "static/tabbar/review.png",
+        "selectedIconPath": "static/tabbar/review-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "static/tabbar/profile.png",
+        "selectedIconPath": "static/tabbar/profile-active.png"
+      }
+    ]
+  },
+  "uniIdRouter": {}
+}
