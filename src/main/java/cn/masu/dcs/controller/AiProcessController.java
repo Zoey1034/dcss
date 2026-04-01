@@ -70,7 +70,7 @@ public class AiProcessController {
      */
     @GetMapping("/status")
     public R<Map<String, Object>> getStatus() {
-        Map<String, Object> status = aiProcessorService.getServiceStatus();
+        Map<String, Object> status = aiProcessorService.queryServiceStatus();
         return R.ok(status);
     }
 }

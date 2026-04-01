@@ -32,7 +32,7 @@ public class TemplateServiceImpl extends ServiceImpl<SysDocTemplateMapper, SysDo
     private final SnowflakeIdGenerator idGenerator;
 
     @Override
-    public Long createTemplate(TemplateCreateDTO dto) {
+    public Long insertTemplate(TemplateCreateDTO dto) {
         LambdaQueryWrapper<SysDocTemplate> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysDocTemplate::getTemplateCode, dto.getTemplateCode());
         if (baseMapper.selectCount(wrapper) > 0) {
@@ -76,7 +76,7 @@ public class TemplateServiceImpl extends ServiceImpl<SysDocTemplateMapper, SysDo
     }
 
     @Override
-    public TemplateVO getTemplateDetail(Long id) {
+    public TemplateVO queryTemplateById(Long id) {
         SysDocTemplate template = baseMapper.selectById(id);
         if (template == null) {
             throw new BusinessException(ErrorCode.TEMPLATE_NOT_FOUND);
@@ -85,7 +85,7 @@ public class TemplateServiceImpl extends ServiceImpl<SysDocTemplateMapper, SysDo
     }
 
     @Override
-    public TemplateVO getTemplateByCode(String code) {
+    public TemplateVO queryTemplateByCode(String code) {
         LambdaQueryWrapper<SysDocTemplate> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysDocTemplate::getTemplateCode, code);
         wrapper.eq(SysDocTemplate::getStatus, 1);
@@ -97,7 +97,7 @@ public class TemplateServiceImpl extends ServiceImpl<SysDocTemplateMapper, SysDo
     }
 
     @Override
-    public PageResult<TemplateVO> getTemplatePage(Long current, Long size, String keyword, Integer status) {
+    public PageResult<TemplateVO> queryTemplatePage(Long current, Long size, String keyword, Integer status) {
         Page<SysDocTemplate> page = new Page<>(current, size);
         LambdaQueryWrapper<SysDocTemplate> wrapper = new LambdaQueryWrapper<>();
 
@@ -122,7 +122,7 @@ public class TemplateServiceImpl extends ServiceImpl<SysDocTemplateMapper, SysDo
     }
 
     @Override
-    public Boolean toggleTemplateStatus(Long id, Integer status) {
+    public Boolean updateTemplateStatus(Long id, Integer status) {
         SysDocTemplate template = baseMapper.selectById(id);
         if (template == null) {
             throw new BusinessException(ErrorCode.TEMPLATE_NOT_FOUND);

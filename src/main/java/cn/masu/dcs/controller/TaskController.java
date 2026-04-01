@@ -29,7 +29,7 @@ public class TaskController {
      */
     @GetMapping("/{id}")
     public R<TaskLogVO> getTaskDetail(@PathVariable Long id) {
-        TaskLogVO vo = taskLogService.getTaskDetail(id);
+        TaskLogVO vo = taskLogService.queryTaskById(id);
         return R.ok(vo);
     }
 
@@ -37,14 +37,14 @@ public class TaskController {
      * 分页查询任务日志
      */
     @GetMapping("/page")
-    public R<PageResult<TaskLogVO>> getTaskPage(
+    public R<PageResult<TaskLogVO>> listTasks(
             @RequestParam(defaultValue = "1") Long current,
             @RequestParam(defaultValue = "10") Long size,
             @RequestParam(required = false) String taskType,
             @RequestParam(required = false) Integer status,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-        PageResult<TaskLogVO> pageResult = taskLogService.getTaskPage(current, size, taskType, status, startDate, endDate);
+        PageResult<TaskLogVO> pageResult = taskLogService.queryTaskPage(current, size, taskType, status, startDate, endDate);
         return R.ok(pageResult);
     }
 
@@ -53,7 +53,7 @@ public class TaskController {
      */
     @GetMapping("/statistics")
     public R<Object> getTaskStatistics() {
-        Object statistics = taskLogService.getTaskStatistics();
+        Object statistics = taskLogService.queryTaskStatistics();
         return R.ok(statistics);
     }
 }

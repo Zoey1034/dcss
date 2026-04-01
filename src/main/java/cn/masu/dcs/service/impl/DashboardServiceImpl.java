@@ -80,7 +80,7 @@ public class DashboardServiceImpl implements DashboardService {
 
 
     @Override
-    public DashboardOverviewVO getOverview() {
+    public DashboardOverviewVO queryOverview() {
         DashboardOverviewVO cached = (DashboardOverviewVO) safeGetFromRedis(DASHBOARD_OVERVIEW_CACHE_KEY);
         if (cached != null) {
             return cached;
@@ -188,7 +188,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public DashboardTrendVO getTrend(Integer days) {
+    public DashboardTrendVO queryTrend(Integer days) {
         String cacheKey = DASHBOARD_TREND_CACHE_KEY_PREFIX + days;
         DashboardTrendVO cached = (DashboardTrendVO) safeGetFromRedis(cacheKey);
         if (cached != null) {
@@ -279,7 +279,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public EfficiencyAnalysisVO getEfficiencyAnalysis() {
+    public EfficiencyAnalysisVO queryEfficiencyAnalysis() {
         EfficiencyAnalysisVO analysis = new EfficiencyAnalysisVO();
 
         // 处理速度分析
@@ -351,7 +351,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public ConfidenceDistributionVO getConfidenceDistribution() {
+    public ConfidenceDistributionVO queryConfidenceDistribution() {
         ConfidenceDistributionVO distribution = new ConfidenceDistributionVO();
 
         List<String> ranges = Arrays.asList(
@@ -392,7 +392,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public FileTypeDistributionVO getFileTypeDistribution() {
+    public FileTypeDistributionVO queryFileTypeDistribution() {
         FileTypeDistributionVO cached = (FileTypeDistributionVO) safeGetFromRedis(DASHBOARD_FILE_TYPE_CACHE_KEY);
         if (cached != null) {
             return cached;
@@ -429,7 +429,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public StatusDistributionVO getStatusDistribution() {
+    public StatusDistributionVO queryStatusDistribution() {
         StatusDistributionVO cached = (StatusDistributionVO) safeGetFromRedis(DASHBOARD_STATUS_CACHE_KEY);
         if (cached != null) {
             return cached;

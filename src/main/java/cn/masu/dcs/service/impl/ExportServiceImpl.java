@@ -282,7 +282,7 @@ public class ExportServiceImpl implements ExportService {
      * 导出概览报表
      */
     private void exportOverviewReport(Workbook workbook) {
-        DashboardOverviewVO overview = dashboardService.getOverview();
+        DashboardOverviewVO overview = dashboardService.queryOverview();
         Sheet sheet = workbook.createSheet("概览统计");
         CellStyle headerStyle = createHeaderStyle(workbook);
 
@@ -323,7 +323,7 @@ public class ExportServiceImpl implements ExportService {
      */
     private void exportTrendReport(Workbook workbook) {
         // 获取最近7天的趋势数据
-        cn.masu.dcs.vo.DashboardTrendVO trend = dashboardService.getTrend(7);
+        cn.masu.dcs.vo.DashboardTrendVO trend = dashboardService.queryTrend(7);
 
         Sheet sheet = workbook.createSheet("趋势数据");
         CellStyle headerStyle = createHeaderStyle(workbook);

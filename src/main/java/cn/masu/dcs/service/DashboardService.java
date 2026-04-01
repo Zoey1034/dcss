@@ -15,7 +15,7 @@ public interface DashboardService {
      *
      * @return 概览统计
      */
-    DashboardOverviewVO getOverview();
+    DashboardOverviewVO queryOverview();
 
     /**
      * 获取趋势数据
@@ -23,34 +23,34 @@ public interface DashboardService {
      * @param days 天数
      * @return 趋势数据
      */
-    DashboardTrendVO getTrend(Integer days);
+    DashboardTrendVO queryTrend(Integer days);
 
     /**
      * 获取效率分析数据
      *
      * @return 效率分析
      */
-    EfficiencyAnalysisVO getEfficiencyAnalysis();
+    EfficiencyAnalysisVO queryEfficiencyAnalysis();
 
     /**
      * 获取置信度分布
      *
      * @return 置信度分布
      */
-    ConfidenceDistributionVO getConfidenceDistribution();
+    ConfidenceDistributionVO queryConfidenceDistribution();
 
     /**
      * 获取文件类型分布
      *
      * @return 文件类型分布
      */
-    FileTypeDistributionVO getFileTypeDistribution();
+    FileTypeDistributionVO queryFileTypeDistribution();
 
     /**
      * 获取处理状态分布
      *
      * @return 处理状态分布
      */
-    StatusDistributionVO getStatusDistribution();
+    StatusDistributionVO queryStatusDistribution();
 }
 

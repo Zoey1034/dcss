@@ -43,7 +43,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long createUser(UserCreateDTO dto) {
+    public Long insertUser(UserCreateDTO dto) {
         // 检查用户名是否已存在
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysUser::getUsername, dto.getUsername());
@@ -89,7 +89,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
 
     @Override
-    public UserVO getUserDetail(Long id) {
+    public UserVO queryUserById(Long id) {
         SysUser user = baseMapper.selectById(id);
         if (user == null || user.getDeleted() == 1) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND);
@@ -98,7 +98,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public SysUser getUserByUsername(String username) {
+    public SysUser queryUserByUsername(String username) {
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysUser::getUsername, username);
         wrapper.eq(SysUser::getDeleted, 0);
@@ -106,7 +106,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public PageResult<UserVO> getUserPage(Long current, Long size, String keyword, Integer status) {
+    public PageResult<UserVO> queryUserPage(Long current, Long size, String keyword, Integer status) {
         Page<SysUser> page = new Page<>(current, size);
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
 
@@ -135,7 +135,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean assignRoles(UserAssignRoleDTO dto) {
+    public Boolean updateUserRoles(UserAssignRoleDTO dto) {
         SysUser user = baseMapper.selectById(dto.getUserId());
         if (user == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND);
@@ -159,7 +159,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public Boolean changePassword(Long userId, String oldPassword, String newPassword) {
+    public Boolean updatePassword(Long userId, String oldPassword, String newPassword) {
         SysUser user = baseMapper.selectById(userId);
         if (user == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND);
@@ -175,7 +175,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public Boolean resetPassword(Long userId, String newPassword) {
+    public Boolean updateResetPassword(Long userId, String newPassword) {
         SysUser user = baseMapper.selectById(userId);
         if (user == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND);
@@ -187,7 +187,7 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
     }
 
     @Override
-    public Boolean invalidateToken(Long userId) {
+    public Boolean deleteToken(Long userId) {
         SysUser user = baseMapper.selectById(userId);
         if (user == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND);

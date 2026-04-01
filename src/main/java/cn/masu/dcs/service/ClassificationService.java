@@ -20,7 +20,7 @@ public interface ClassificationService {
      *
      * @return 文档类型及数量
      */
-    List<Map<String, Object>> getDocumentTypeStatistics();
+    List<Map<String, Object>> queryDocumentTypeStatistics();
 
     /**
      * 按文档类型分页查询
@@ -31,7 +31,7 @@ public interface ClassificationService {
      * @param keyword 搜索关键词
      * @return 分页结果
      */
-    PageResult<DocumentClassificationVO> getDocumentsByType(
+    PageResult<DocumentClassificationVO> queryDocumentsByType(
             String documentType, Long current, Long size, String keyword);
 
     /**
@@ -40,7 +40,7 @@ public interface ClassificationService {
      * @param fileId 文件ID
      * @return 详细信息
      */
-    DocumentDetailVO getDocumentDetail(String fileId);
+    DocumentDetailVO queryDocumentById(String fileId);
 
     /**
      * 搜索文档
@@ -50,7 +50,7 @@ public interface ClassificationService {
      * @param size 每页数量
      * @return 搜索结果
      */
-    PageResult<DocumentClassificationVO> searchDocuments(
+    PageResult<DocumentClassificationVO> queryDocumentsByKeyword(
             String keyword, Long current, Long size);
 }
 

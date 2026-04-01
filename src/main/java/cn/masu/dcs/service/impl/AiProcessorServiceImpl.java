@@ -118,7 +118,7 @@ public class AiProcessorServiceImpl implements AiProcessorService {
 
             // 保存结果到数据库（通过独立的事务服务调用，确保事务生效）
             if (fileId != null) {
-                aiResultPersistenceService.saveAiResult(fileId, aiResult, fileUrl);
+                aiResultPersistenceService.insertAiResult(fileId, aiResult, fileUrl);
             }
 
             // 组装返回结果
@@ -154,7 +154,7 @@ public class AiProcessorServiceImpl implements AiProcessorService {
     }
 
     @Override
-    public Map<String, Object> getServiceStatus() {
+    public Map<String, Object> queryServiceStatus() {
         Map<String, Object> status = new HashMap<>(DEFAULT_MAP_CAPACITY);
         status.put("service", "AI Document Assistant");
         status.put("status", "ready");
@@ -316,12 +316,12 @@ public class AiProcessorServiceImpl implements AiProcessorService {
      * @param fileId   文件ID
      * @param aiResult AI处理结果
      * @param fileUrl  文件URL
-     * @deprecated 请直接使用 aiResultPersistenceService.saveAiResult()
+     * @deprecated 请直接使用 aiResultPersistenceService.insertAiResult()
      */
     @Deprecated
     @SuppressWarnings("unused")
-    public void saveAiResult(Long fileId, JsonNode aiResult, String fileUrl) {
-        aiResultPersistenceService.saveAiResult(fileId, aiResult, fileUrl);
+    public void insertAiResult(Long fileId, JsonNode aiResult, String fileUrl) {
+        aiResultPersistenceService.insertAiResult(fileId, aiResult, fileUrl);
     }
 
 

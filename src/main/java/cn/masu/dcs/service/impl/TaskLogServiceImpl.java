@@ -33,7 +33,7 @@ public class TaskLogServiceImpl extends ServiceImpl<SysTaskLogMapper, SysTaskLog
     private final SnowflakeIdGenerator idGenerator;
 
     @Override
-    public Long createTaskLog(String taskName, String taskType, Long targetId) {
+    public Long insertTaskLog(String taskName, String taskType, Long targetId) {
         SysTaskLog taskLog = new SysTaskLog();
         taskLog.setId(idGenerator.nextId());
         taskLog.setTaskName(taskName);
@@ -86,7 +86,7 @@ public class TaskLogServiceImpl extends ServiceImpl<SysTaskLogMapper, SysTaskLog
     }
 
     @Override
-    public TaskLogVO getTaskDetail(Long id) {
+    public TaskLogVO queryTaskById(Long id) {
         SysTaskLog taskLog = baseMapper.selectById(id);
         if (taskLog == null) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR.getCode(), "任务日志不存在");
@@ -95,7 +95,7 @@ public class TaskLogServiceImpl extends ServiceImpl<SysTaskLogMapper, SysTaskLog
     }
 
     @Override
-    public PageResult<TaskLogVO> getTaskPage(Long current, Long size, String taskType, Integer status, Date startDate, Date endDate) {
+    public PageResult<TaskLogVO> queryTaskPage(Long current, Long size, String taskType, Integer status, Date startDate, Date endDate) {
         Page<SysTaskLog> page = new Page<>(current, size);
         LambdaQueryWrapper<SysTaskLog> wrapper = new LambdaQueryWrapper<>();
 
@@ -127,7 +127,7 @@ public class TaskLogServiceImpl extends ServiceImpl<SysTaskLogMapper, SysTaskLog
     }
 
     @Override
-    public Object getTaskStatistics() {
+    public Object queryTaskStatistics() {
         // 统计各状态的任务数量
         LambdaQueryWrapper<SysTaskLog> wrapper = new LambdaQueryWrapper<>();
 

@@ -63,7 +63,7 @@ public class AiResultPersistenceServiceImpl implements AiResultPersistenceServic
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveAiResult(Long fileId, JsonNode aiResult, String fileUrl) {
+    public void insertAiResult(Long fileId, JsonNode aiResult, String fileUrl) {
         try {
             DocumentExtractMain extractMain = buildExtractMain(fileId, aiResult, fileUrl);
             extractMainMapper.insert(extractMain);

@@ -20,7 +20,7 @@ public interface AiResultPersistenceService {
      * @param aiResult AI处理结果
      * @param fileUrl  文件URL
      */
-    void saveAiResult(Long fileId, JsonNode aiResult, String fileUrl);
+    void insertAiResult(Long fileId, JsonNode aiResult, String fileUrl);
 
     /**
      * 更新文件处理状态（事务方法）

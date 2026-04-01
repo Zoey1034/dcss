@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        SysUser user = userService.getUserByUsername(request.getUsername());
+        SysUser user = userService.queryUserByUsername(request.getUsername());
         if (user == null || user.getDeleted() == 1) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND);
         }
@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse register(UserCreateDTO request) {
         // 使用 UserService 创建用户
-        Long userId = userService.createUser(request);
+        Long userId = userService.insertUser(request);
         SysUser user = userService.getById(userId);
         if (user == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND);
@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(Long userId) {
-        userService.invalidateToken(userId);
+        userService.deleteToken(userId);
         evictUserSession(userId);
         log.info("用户登出成功: userId={}", userId);
     }

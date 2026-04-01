@@ -31,7 +31,7 @@ public class FileController {
      * 上传文件
      */
     @PostMapping("/upload")
-    public R<Long> uploadFile(
+    public R<Long> addFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam(required = false) Long templateId,
             @RequestParam(required = false) Long userId) {
@@ -49,7 +49,7 @@ public class FileController {
             }
         }
 
-        Long id = fileService.uploadFile(file, templateId, userId);
+        Long id = fileService.insertFile(file, templateId, userId);
         return R.ok("上传成功", id);
     }
 
@@ -57,9 +57,9 @@ public class FileController {
      * 下载文件
      */
     @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
-        FileDetailVO fileDetail = fileService.getFileDetail(id);
-        byte[] fileContent = fileService.downloadFile(id);
+    public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
+        FileDetailVO fileDetail = fileService.queryFileById(id);
+        byte[] fileContent = fileService.queryFileContent(id);
 
         String encodedFileName;
         try {
@@ -80,7 +80,7 @@ public class FileController {
      * 删除文件
      */
     @DeleteMapping("/{id}")
-    public R<Boolean> deleteFile(@PathVariable Long id) {
+    public R<Boolean> removeFile(@PathVariable Long id) {
         Boolean result = fileService.deleteFile(id);
         return R.ok("删除成功", result);
     }
@@ -90,7 +90,7 @@ public class FileController {
      */
     @GetMapping("/{id}")
     public R<FileDetailVO> getFileDetail(@PathVariable Long id) {
-        FileDetailVO vo = fileService.getFileDetail(id);
+        FileDetailVO vo = fileService.queryFileById(id);
         return R.ok(vo);
     }
 
@@ -98,7 +98,7 @@ public class FileController {
      * 更新文件状态
      */
     @PutMapping("/status")
-    public R<Boolean> updateFileStatus(@Validated @RequestBody FileUpdateStatusDTO dto) {
+    public R<Boolean> editFileStatus(@Validated @RequestBody FileUpdateStatusDTO dto) {
         Boolean result = fileService.updateFileStatus(dto);
         return R.ok("状态更新成功", result);
     }
@@ -107,13 +107,13 @@ public class FileController {
      * 分页查询文件列表
      */
     @GetMapping("/page")
-    public R<PageResult<FileDetailVO>> getFilePage(
+    public R<PageResult<FileDetailVO>> listFiles(
             @RequestParam(defaultValue = "1") Long current,
             @RequestParam(defaultValue = "10") Long size,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Integer status,
             @RequestParam(required = false) Long userId) {
-        PageResult<FileDetailVO> pageResult = fileService.getFilePage(current, size, keyword, status, userId);
+        PageResult<FileDetailVO> pageResult = fileService.queryFilePage(current, size, keyword, status, userId);
         return R.ok(pageResult);
     }
 }

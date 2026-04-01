@@ -70,7 +70,7 @@ public class AiServiceImpl implements AiService {
 
         try {
             // 1. 上传文件到MinIO并创建记录
-            Long fileId = fileService.uploadFile(file, templateId, userId);
+            Long fileId = fileService.insertFile(file, templateId, userId);
             log.info("文件上传成功: fileId={}, fileName={}", fileId, fileName);
 
             // 2. 调用AI服务解析
@@ -157,7 +157,7 @@ public class AiServiceImpl implements AiService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveVerifiedData(Long fileId, AiProcessResponse response) {
+    public void updateVerifiedData(Long fileId, AiProcessResponse response) {
         log.info("开始保存校对数据: fileId={}", fileId);
 
         // 校验数据一致性
@@ -266,7 +266,7 @@ public class AiServiceImpl implements AiService {
      * 获取文件详情，不存在则抛异常
      */
     private FileDetailVO getFileDetailOrThrow(Long fileId) {
-        FileDetailVO fileDetail = fileService.getFileDetail(fileId);
+        FileDetailVO fileDetail = fileService.queryFileById(fileId);
         if (fileDetail == null) {
             log.error("文件不存在: fileId={}", fileId);
             throw new BusinessException(ErrorCode.FILE_NOT_FOUND);

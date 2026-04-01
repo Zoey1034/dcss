@@ -48,7 +48,7 @@ public class ExtractServiceImpl implements ExtractService {
      * @return 编辑VO对象
      */
     @Override
-    public ExtractEditVO getEditData(Long fileId) {
+    public ExtractEditVO queryEditData(Long fileId) {
         log.info("获取提取数据: fileId={}", fileId);
 
         LambdaQueryWrapper<DocumentExtractMain> mainWrapper = new LambdaQueryWrapper<>();
@@ -152,7 +152,7 @@ public class ExtractServiceImpl implements ExtractService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long createDetail(ExtractDetailCreateDTO dto) {
+    public Long insertDetail(ExtractDetailCreateDTO dto) {
         log.info("创建明细数据: mainId={}", dto.getMainId());
 
         DocumentExtractDetail detail = new DocumentExtractDetail();
@@ -189,7 +189,7 @@ public class ExtractServiceImpl implements ExtractService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean markAsVerified(Long detailId) {
+    public Boolean updateVerified(Long detailId) {
         log.info("标记为已校对: detailId={}", detailId);
 
         DocumentExtractDetail detail = detailMapper.selectById(detailId);

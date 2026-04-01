@@ -46,9 +46,9 @@ public class ReviewController {
      * @return 待审核任务分页列表
      */
     @GetMapping("/pending")
-    public R<PageResult<ReviewTaskVO>> getPendingTasks(@Validated ReviewQueryDTO dto) {
+    public R<PageResult<ReviewTaskVO>> listPendingTasks(@Validated ReviewQueryDTO dto) {
         log.info("查询待审核任务列表: {}", dto);
-        PageResult<ReviewTaskVO> result = reviewService.getPendingTasks(dto);
+        PageResult<ReviewTaskVO> result = reviewService.queryPendingTasks(dto);
         return R.ok(result);
     }
 
@@ -68,7 +68,7 @@ public class ReviewController {
     @GetMapping("/{fileId}/detail")
     public R<ReviewDetailVO> getReviewDetail(@PathVariable Long fileId) {
         log.info("获取任务详情: fileId={}", fileId);
-        ReviewDetailVO detail = reviewService.getReviewDetail(fileId);
+        ReviewDetailVO detail = reviewService.queryReviewById(fileId);
         return R.ok(detail);
     }
 
@@ -83,10 +83,10 @@ public class ReviewController {
      * @return 保存结果
      */
     @PostMapping("/save-draft")
-    public R<Boolean> saveDraft(@Validated @RequestBody ReviewSaveDTO dto) {
+    public R<Boolean> addDraft(@Validated @RequestBody ReviewSaveDTO dto) {
         Long userId = getCurrentUserId();
         log.info("保存草稿: fileId={}, userId={}", dto.getFileId(), userId);
-        Boolean result = reviewService.saveDraft(dto, userId);
+        Boolean result = reviewService.insertDraft(dto, userId);
         return R.ok("保存成功", result);
     }
 
@@ -102,10 +102,10 @@ public class ReviewController {
      * @return 完成结果
      */
     @PostMapping("/complete")
-    public R<Boolean> completeReview(@Validated @RequestBody ReviewCompleteDTO dto) {
+    public R<Boolean> editReviewComplete(@Validated @RequestBody ReviewCompleteDTO dto) {
         Long userId = getCurrentUserId();
         log.info("完成校对: fileId={}, userId={}", dto.getFileId(), userId);
-        Boolean result = reviewService.completeReview(dto, userId);
+        Boolean result = reviewService.updateReviewComplete(dto, userId);
         return R.ok("校对完成", result);
     }
 
@@ -116,9 +116,9 @@ public class ReviewController {
      * @return 审核历史列表
      */
     @GetMapping("/{fileId}/history")
-    public R<List<AuditHistoryVO>> getAuditHistory(@PathVariable Long fileId) {
+    public R<List<AuditHistoryVO>> listAuditHistory(@PathVariable Long fileId) {
         log.info("获取审核历史: fileId={}", fileId);
-        List<AuditHistoryVO> history = reviewService.getAuditHistory(fileId);
+        List<AuditHistoryVO> history = reviewService.queryAuditHistory(fileId);
         return R.ok(history);
     }
 
@@ -131,7 +131,7 @@ public class ReviewController {
     @GetMapping("/{fileId}/preview-url")
     public R<String> getPreviewUrl(@PathVariable Long fileId) {
         log.info("获取文件预览URL: fileId={}", fileId);
-        String url = reviewService.getFilePreviewUrl(fileId);
+        String url = reviewService.queryFilePreviewUrl(fileId);
         return R.ok(url);
     }
 
@@ -142,10 +142,10 @@ public class ReviewController {
      * @return 处理结果
      */
     @PostMapping("/batch-complete")
-    public R<Map<String, Object>> batchComplete(@RequestBody List<Long> fileIds) {
+    public R<Map<String, Object>> editBatchComplete(@RequestBody List<Long> fileIds) {
         Long userId = getCurrentUserId();
         log.info("批量完成校对: fileIds={}, count={}", fileIds, fileIds.size());
-        Map<String, Object> result = reviewService.batchComplete(fileIds, userId);
+        Map<String, Object> result = reviewService.updateBatchComplete(fileIds, userId);
         return R.ok(result);
     }
 
