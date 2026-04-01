@@ -1,27 +1,97 @@
-/* 全局变量 */
-$primary-color: #1a6fc4;
-$primary-light: #e8f0fe;
-$success-color: #52c41a;
-$warning-color: #faad14;
-$danger-color: #ff4d4f;
-$text-color: #333333;
-$text-secondary: #666666;
-$text-placeholder: #999999;
-$border-color: #e8e8e8;
-$bg-color: #f5f5f5;
+/* ============ 颜色系统 ============ */
+/* 主色调 - 专业蓝色系统 */
+$primary-color: #2563eb;
+$primary-light: #dbeafe;
+$primary-lighter: #eff6ff;
+$primary-dark: #1e40af;
+$primary-darker: #1e3a8a;
+
+/* 功能色 */
+$success-color: #10b981;
+$success-light: #d1fae5;
+$warning-color: #f59e0b;
+$warning-light: #fef3c7;
+$danger-color: #ef4444;
+$danger-light: #fee2e2;
+$info-color: #3b82f6;
+$info-light: #dbeafe;
+
+/* 中性色 */
+$text-color: #1f2937;
+$text-secondary: #6b7280;
+$text-tertiary: #9ca3af;
+$text-placeholder: #d1d5db;
+$border-color: #e5e7eb;
+$border-light: #f3f4f6;
+$bg-color: #f9fafb;
+$bg-light: #ffffff;
 $white: #ffffff;
+$black: #000000;
 
-/* 间距 */
+/* 渐变色 */
+$gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$gradient-blue: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+$gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+
+/* ============ 间距系统 ============ */
 $spacing-xs: 8rpx;
-$spacing-sm: 16rpx;
-$spacing-md: 24rpx;
-$spacing-lg: 32rpx;
-$spacing-xl: 48rpx;
+$spacing-sm: 12rpx;
+$spacing-md: 16rpx;
+$spacing-lg: 24rpx;
+$spacing-xl: 32rpx;
+$spacing-2xl: 40rpx;
+$spacing-3xl: 48rpx;
+$spacing-4xl: 64rpx;
 
-/* 圆角 */
+/* ============ 圆角系统 ============ */
+$border-radius-xs: 4rpx;
 $border-radius-sm: 8rpx;
 $border-radius-md: 12rpx;
 $border-radius-lg: 16rpx;
+$border-radius-xl: 20rpx;
+$border-radius-2xl: 24rpx;
+$border-radius-full: 9999rpx;
 
-/* 阴影 */
-$box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+/* ============ 阴影系统 ============ */
+$box-shadow-xs: 0 2rpx 4rpx rgba(0, 0, 0, 0.04);
+$box-shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+$box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+$box-shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+$box-shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+$box-shadow-xl: 0 12rpx 32rpx rgba(0, 0, 0, 0.15);
+
+/* ============ 字体系统 ============ */
+$font-size-xs: 20rpx;
+$font-size-sm: 24rpx;
+$font-size-base: 28rpx;
+$font-size-md: 30rpx;
+$font-size-lg: 32rpx;
+$font-size-xl: 36rpx;
+$font-size-2xl: 40rpx;
+$font-size-3xl: 48rpx;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+/* ============ 行高系统 ============ */
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+/* ============ 过渡动画 ============ */
+$transition-fast: 0.15s;
+$transition-base: 0.2s;
+$transition-slow: 0.3s;
+$transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+/* ============ Z-index 层级 ============ */
+$z-index-normal: 1;
+$z-index-dropdown: 10;
+$z-index-sticky: 20;
+$z-index-fixed: 30;
+$z-index-modal-backdrop: 40;
+$z-index-modal: 50;
+$z-index-popover: 60;
+$z-index-tooltip: 70;
