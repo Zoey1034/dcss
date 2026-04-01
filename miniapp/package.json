@@ -1,0 +1,21 @@
+{
+  "name": "dcss-miniapp",
+  "version": "1.0.0",
+  "description": "智能文档处理系统 - 小程序端",
+  "scripts": {
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "dev:h5": "uni -p h5",
+    "build:h5": "uni build -p h5"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "3.x",
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@dcloudio/uni-cli-shared": "3.x",
+    "@dcloudio/vite-plugin-uni": "3.x",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "vite": "^4.0.0"
+  }
+}
