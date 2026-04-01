@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Miniapp ###
+miniapp/node_modules/
+miniapp/unpackage/
+miniapp/dist/
+miniapp/.hbuilderx/
+miniapp/.env.local
+miniapp/package-lock.json
+miniapp/yarn.lock
+miniapp/pnpm-lock.yaml
