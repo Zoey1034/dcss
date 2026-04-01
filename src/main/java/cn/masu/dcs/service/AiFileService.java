@@ -1,6 +1,7 @@
 package cn.masu.dcs.service;
 
 import cn.masu.dcs.common.config.MinioConfig;
+import cn.masu.dcs.common.constant.FileConstants;
 import cn.masu.dcs.common.util.MinioUtils;
 import cn.masu.dcs.common.util.SnowflakeIdGenerator;
 import cn.masu.dcs.dto.AiDocProcessRequest;
@@ -23,8 +24,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
 /**
- * 负责将前端上传的Base64文件持久化到 MinIO 与数据库的服务，确保事务在代理中生效。
+ * AI 文件持久化服务
+ * <p>
+ * 负责将前端上传的 Base64 文件持久化到 MinIO 与数据库，确保事务在代理中生效。
+ * </p>
+ *
  * @author zyq
+ * @since 2025-12-06
  */
 @Slf4j
 @Service
@@ -37,26 +43,45 @@ public class AiFileService {
     private final DocumentFileMapper fileMapper;
     private final SysUserMapper userMapper;
 
-    private static final String DEFAULT_CONTENT_TYPE = "application/octet-stream";
-    private static final String CONTENT_TYPE_IMAGE_JPEG = "image/jpeg";
-    private static final String CONTENT_TYPE_IMAGE_JPG = "image/jpg";
-    private static final String CONTENT_TYPE_IMAGE_PNG = "image/png";
-    private static final String EXT_PDF = "pdf";
-    private static final String EXT_JPG = "jpg";
-    private static final String EXT_PNG = "png";
-    private static final String EXT_BIN = "bin";
+    /** 逗号分隔符，用于解析 Data URI */
     private static final String COMMA = ",";
+
+    /** 冒号分隔符，用于解析 Content-Type */
     private static final String COLON = ":";
+
+    /** 分号分隔符，用于解析 Content-Type */
     private static final String SEMICOLON = ";";
+
+    /** 扩展名分隔符 */
     private static final String DOT = ".";
 
+    /** 文件扩展名：二进制默认扩展名 */
+    private static final String EXT_BIN = "bin";
+
+    /** PDF 扩展名（无点前缀，用于 Content-Type 匹配） */
+    private static final String EXT_PDF_PLAIN = "pdf";
+
+    /** JPG 扩展名（无点前缀） */
+    private static final String EXT_JPG_PLAIN = "jpg";
+
+    /** PNG 扩展名（无点前缀） */
+    private static final String EXT_PNG_PLAIN = "png";
+
+    /**
+     * 将 Base64 编码的文件内容保存到 MinIO 并在数据库中创建文件记录
+     *
+     * @param request   AI 文档处理请求，包含 fileContent（Base64）和 fileName
+     * @param requestId 请求 ID，用作批次号（可为 null）
+     * @return 新建文件记录的 ID
+     * @throws Exception MinIO 上传或数据库插入异常
+     */
     @Transactional(rollbackFor = Exception.class)
     public Long saveFileToMinioAndDatabase(AiDocProcessRequest request, String requestId) throws Exception {
         String fileContent = request.getFileContent();
         String fileName = request.getFileName();
 
         String base64Data;
-        String contentType = DEFAULT_CONTENT_TYPE;
+        String contentType = FileConstants.MIME_OCTET_STREAM;
 
         if (fileContent.contains(COMMA)) {
             String[] parts = fileContent.split(COMMA, 2);
@@ -110,22 +135,35 @@ public class AiFileService {
         }
     }
 
+    /**
+     * 根据文件名和 Content-Type 推断文件扩展名
+     *
+     * @param fileName    文件名
+     * @param contentType Content-Type 字符串
+     * @return 小写扩展名（不含点），如 "pdf"、"jpg"
+     */
     private String resolveExtension(String fileName, String contentType) {
         if (fileName != null && fileName.contains(DOT)) {
             return fileName.substring(fileName.lastIndexOf(DOT) + 1).toLowerCase();
         }
-        if (contentType.contains(EXT_PDF)) {
-            return EXT_PDF;
+        if (contentType.contains(EXT_PDF_PLAIN)) {
+            return EXT_PDF_PLAIN;
         }
-        if (contentType.contains(CONTENT_TYPE_IMAGE_JPEG) || contentType.contains(CONTENT_TYPE_IMAGE_JPG)) {
-            return EXT_JPG;
+        if (contentType.contains(FileConstants.CONTENT_TYPE_IMAGE_JPEG)
+                || contentType.contains(FileConstants.CONTENT_TYPE_IMAGE_JPG)) {
+            return EXT_JPG_PLAIN;
         }
-        if (contentType.contains(CONTENT_TYPE_IMAGE_PNG)) {
-            return EXT_PNG;
+        if (contentType.contains(FileConstants.CONTENT_TYPE_IMAGE_PNG)) {
+            return EXT_PNG_PLAIN;
         }
         return EXT_BIN;
     }
 
+    /**
+     * 从 Spring Security 上下文中获取当前登录用户 ID
+     *
+     * @return 用户 ID，获取失败时返回 null
+     */
     private Long getCurrentUserId() {
         try {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -145,6 +183,12 @@ public class AiFileService {
         return null;
     }
 
+    /**
+     * 当 Security 上下文无用户时，从数据库查询第一个用户作为默认上传者
+     *
+     * @return 默认用户 ID
+     * @throws RuntimeException 数据库中无任何用户时抛出
+     */
     private Long getDefaultUserId() {
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByAsc(SysUser::getId).last("LIMIT 1");

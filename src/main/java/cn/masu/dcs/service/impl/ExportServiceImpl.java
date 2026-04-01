@@ -6,9 +6,7 @@ import cn.masu.dcs.entity.DocumentFile;
 import cn.masu.dcs.mapper.AuditRecordMapper;
 import cn.masu.dcs.mapper.DocumentExtractMainMapper;
 import cn.masu.dcs.mapper.DocumentFileMapper;
-import cn.masu.dcs.service.DashboardService;
 import cn.masu.dcs.service.ExportService;
-import cn.masu.dcs.vo.DashboardOverviewVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +26,8 @@ import java.util.List;
 /**
  * 导出服务实现
  * <p>
- * 使用Apache POI导出Excel文件
+ * 使用Apache POI导出Excel文件，处理文件列表和审核记录的导出。
+ * 统计报表导出（需聚合 DashboardService 数据）已移至 {@link cn.masu.dcs.business.ExportBusiness}。
  * </p>
  *
  * @author zyq
@@ -42,12 +41,11 @@ public class ExportServiceImpl implements ExportService {
     private final DocumentFileMapper fileMapper;
     private final AuditRecordMapper auditRecordMapper;
     private final DocumentExtractMainMapper extractMainMapper;
-    private final DashboardService dashboardService;
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public ByteArrayOutputStream exportFiles(Integer status, String keyword) {
+    public ByteArrayOutputStream queryExportFiles(Integer status, String keyword) {
         log.info("开始导出文件列表");
 
         // 查询数据
@@ -113,7 +111,7 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public ByteArrayOutputStream exportAuditRecords(Long fileId, String startDate, String endDate) {
+    public ByteArrayOutputStream queryExportAuditRecords(Long fileId, String startDate, String endDate) {
         log.info("开始导出审核记录");
 
         // 查询数据
@@ -192,32 +190,7 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public ByteArrayOutputStream exportReport(String type) {
-        log.info("开始导出统计报表: type={}", type);
-
-        try (Workbook workbook = new XSSFWorkbook();
-             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-
-            if ("overview".equals(type)) {
-                exportOverviewReport(workbook);
-            } else if ("trend".equals(type)) {
-                exportTrendReport(workbook);
-            } else {
-                throw new RuntimeException("不支持的报表类型: " + type);
-            }
-
-            workbook.write(outputStream);
-            log.info("统计报表导出完成");
-            return outputStream;
-
-        } catch (IOException e) {
-            log.error("导出统计报表失败", e);
-            throw new RuntimeException("导出失败", e);
-        }
-    }
-
-    @Override
-    public ByteArrayOutputStream batchExportFileData(List<Long> fileIds) {
+    public ByteArrayOutputStream queryBatchExportData(List<Long> fileIds) {
         log.info("开始批量导出文件数据, 数量: {}", fileIds.size());
 
         try (Workbook workbook = new XSSFWorkbook();
@@ -279,89 +252,6 @@ public class ExportServiceImpl implements ExportService {
     }
 
     /**
-     * 导出概览报表
-     */
-    private void exportOverviewReport(Workbook workbook) {
-        DashboardOverviewVO overview = dashboardService.queryOverview();
-        Sheet sheet = workbook.createSheet("概览统计");
-        CellStyle headerStyle = createHeaderStyle(workbook);
-
-        int rowNum = 0;
-
-        // 文件统计
-        Row titleRow = sheet.createRow(rowNum++);
-        Cell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("文件统计");
-        titleCell.setCellStyle(headerStyle);
-
-        createDataRow(sheet, rowNum++, "文件总数", overview.getFileStats().getTotal());
-        createDataRow(sheet, rowNum++, "已处理", overview.getFileStats().getProcessed());
-        createDataRow(sheet, rowNum++, "待处理", overview.getFileStats().getPending());
-        createDataRow(sheet, rowNum++, "待审核", overview.getFileStats().getNeedReview());
-        createDataRow(sheet, rowNum++, "已归档", overview.getFileStats().getArchived());
-        createDataRow(sheet, rowNum++, "失败", overview.getFileStats().getFailed());
-
-        rowNum++;
-
-        // 任务统计
-        titleRow = sheet.createRow(rowNum++);
-        titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("任务统计");
-        titleCell.setCellStyle(headerStyle);
-
-        createDataRow(sheet, rowNum++, "任务总数", overview.getTaskStats().getTotal());
-        createDataRow(sheet, rowNum++, "成功数", overview.getTaskStats().getSuccess());
-        createDataRow(sheet, rowNum++, "平均置信度", overview.getTaskStats().getAvgConfidence());
-
-        // 自动调整列宽
-        sheet.autoSizeColumn(0);
-        sheet.autoSizeColumn(1);
-    }
-
-    /**
-     * 导出趋势报表
-     */
-    private void exportTrendReport(Workbook workbook) {
-        // 获取最近7天的趋势数据
-        cn.masu.dcs.vo.DashboardTrendVO trend = dashboardService.queryTrend(7);
-
-        Sheet sheet = workbook.createSheet("趋势数据");
-        CellStyle headerStyle = createHeaderStyle(workbook);
-
-        // 创建表头
-        Row headerRow = sheet.createRow(0);
-        String[] headers = {"日期", "文件数", "平均置信度", "成功数", "失败数", "待审核数"};
-        for (int i = 0; i < headers.length; i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(headers[i]);
-            cell.setCellStyle(headerStyle);
-        }
-
-        // 填充数据
-        List<String> dates = trend.getDates();
-        List<Long> fileCount = trend.getFileCount();
-        List<Double> avgConfidence = trend.getAvgConfidence();
-        List<Long> successCount = trend.getSuccessCount();
-        List<Long> failCount = trend.getFailCount();
-        List<Long> reviewCount = trend.getReviewCount();
-
-        for (int i = 0; i < dates.size(); i++) {
-            Row row = sheet.createRow(i + 1);
-            row.createCell(0).setCellValue(dates.get(i));
-            row.createCell(1).setCellValue(fileCount.get(i));
-            row.createCell(2).setCellValue(avgConfidence.get(i));
-            row.createCell(3).setCellValue(successCount.get(i));
-            row.createCell(4).setCellValue(failCount.get(i));
-            row.createCell(5).setCellValue(reviewCount.get(i));
-        }
-
-        // 自动调整列宽
-        for (int i = 0; i < headers.length; i++) {
-            sheet.autoSizeColumn(i);
-        }
-    }
-
-    /**
      * 创建表头样式
      */
     private CellStyle createHeaderStyle(Workbook workbook) {
@@ -373,20 +263,6 @@ public class ExportServiceImpl implements ExportService {
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         style.setAlignment(HorizontalAlignment.CENTER);
         return style;
-    }
-
-    /**
-     * 创建数据行
-     */
-    private void createDataRow(Sheet sheet, int rowNum, String label, Object value) {
-        Row row = sheet.createRow(rowNum);
-        row.createCell(0).setCellValue(label);
-
-        if (value instanceof Number) {
-            row.createCell(1).setCellValue(((Number) value).doubleValue());
-        } else {
-            row.createCell(1).setCellValue(value != null ? value.toString() : "");
-        }
     }
 
     /**
@@ -439,4 +315,5 @@ public class ExportServiceImpl implements ExportService {
         }
     }
 }
+
 
