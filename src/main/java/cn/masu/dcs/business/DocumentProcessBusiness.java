@@ -22,9 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -409,33 +406,6 @@ public class DocumentProcessBusiness {
             return FileConstants.MIME_WEBP;
         }
         return FileConstants.MIME_OCTET_STREAM;
-    }
-
-    /**
-     * 下载文件到临时目录（保留作为备用方法）
-     */
-    @SuppressWarnings("unused")
-    private Path downloadFileToTemp(String bucketName, String objectName, String originalFileName) {
-        try (InputStream inputStream = minioUtils.downloadFile(bucketName, objectName)) {
-            String suffix = "";
-
-            // 优先从原始文件名获取扩展名
-            if (StringUtils.hasText(originalFileName) && originalFileName.contains(DOT)) {
-                suffix = originalFileName.substring(originalFileName.lastIndexOf(DOT));
-            }
-            // 如果文件名为空，从objectName获取扩展名
-            else if (StringUtils.hasText(objectName) && objectName.contains(DOT)) {
-                suffix = objectName.substring(objectName.lastIndexOf(DOT));
-            }
-
-            Path tempFile = Files.createTempFile("ai-process-", suffix);
-            Files.copy(inputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
-            log.debug("文件下载到临时路径: {} (suffix={})", tempFile, suffix);
-            return tempFile;
-        } catch (Exception e) {
-            log.error("下载文件到临时目录失败: {}/{}", bucketName, objectName, e);
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR.getCode(), "下载文件失败");
-        }
     }
 
     /**

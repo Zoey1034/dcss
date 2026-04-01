@@ -95,7 +95,7 @@ public class AuthBusiness {
     /**
      * 用户登出
      * <p>
-     * 使 Token 版本失效并删除 Redis 会话缓存。
+     * 通过更新 Token 版本号使旧 Token 失效，并删除 Redis 会话缓存。
      * </p>
      *
      * @param userId 用户ID
