@@ -1,0 +1,21 @@
+{
+  "name": "智能文档处理系统",
+  "appid": "__UNI__DCSS001",
+  "description": "智能文档处理系统小程序端",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false
+    },
+    "usingComponents": true
+  },
+  "h5": {
+    "title": "智能文档处理系统",
+    "router": {
+      "mode": "history"
+    }
+  }
+}
