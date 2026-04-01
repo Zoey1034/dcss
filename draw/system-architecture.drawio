@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-12-06T00:00:00.000Z" agent="Copilot" version="24.0.0" type="device">
+  <diagram name="系统架构图" id="system-architecture">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- 标题 -->
+        <mxCell id="title" value="智能文档分类系统 - 系统架构图" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="769" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 前端层 -->
+        <mxCell id="frontend-bg" value="前端层" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="1010" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" value="浏览器 / Web 前端&#xa;(Vue.js / React)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="frontend-bg">
+          <mxGeometry x="370" y="25" width="270" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Controller 层 -->
+        <mxCell id="controller-bg" value="Controller 层" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="80" y="200" width="1010" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" value="AuthController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="controller-bg">
+          <mxGeometry x="10" y="25" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" value="FileController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="controller-bg">
+          <mxGeometry x="155" y="25" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" value="ReviewController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="controller-bg">
+          <mxGeometry x="300" y="25" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="AuditController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="controller-bg">
+          <mxGeometry x="445" y="25" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="DashboardController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="controller-bg">
+          <mxGeometry x="590" y="25" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c6" value="ExportController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="controller-bg">
+          <mxGeometry x="745" y="25" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c7" value="AiProcessController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="controller-bg">
+          <mxGeometry x="890" y="25" width="110" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Business 层 -->
+        <mxCell id="business-bg" value="Business 层（多服务编排）" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="1010" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" value="AuthBusiness&#xa;(UserService + JWT + Redis)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="business-bg">
+          <mxGeometry x="80" y="20" width="220" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" value="DocumentProcessBusiness&#xa;(AiFileService + AIClient + Persistence)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="business-bg">
+          <mxGeometry x="360" y="20" width="290" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" value="ExportBusiness&#xa;(ExportService + DashboardService)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="business-bg">
+          <mxGeometry x="710" y="20" width="240" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- Service 层 -->
+        <mxCell id="service-bg" value="Service 层" style="swimlane;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="80" y="440" width="1010" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" value="UserService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="service-bg">
+          <mxGeometry x="10" y="25" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" value="FileService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="service-bg">
+          <mxGeometry x="145" y="25" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="ReviewService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="service-bg">
+          <mxGeometry x="280" y="25" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" value="AuditService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="service-bg">
+          <mxGeometry x="415" y="25" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="s5" value="DashboardService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="service-bg">
+          <mxGeometry x="550" y="25" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="s6" value="ExportService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="service-bg">
+          <mxGeometry x="695" y="25" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="s7" value="AiFileService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="service-bg">
+          <mxGeometry x="830" y="25" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Mapper 层 -->
+        <mxCell id="mapper-bg" value="Mapper 层（MyBatis-Plus BaseMapper）" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="80" y="560" width="1010" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="m1" value="SysUserMapper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="mapper-bg">
+          <mxGeometry x="10" y="25" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="m2" value="DocumentFileMapper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="mapper-bg">
+          <mxGeometry x="155" y="25" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="m3" value="AuditRecordMapper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="mapper-bg">
+          <mxGeometry x="320" y="25" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="m4" value="DocumentExtractMainMapper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="mapper-bg">
+          <mxGeometry x="485" y="25" width="185" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="m5" value="SysDocTemplateMapper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="mapper-bg">
+          <mxGeometry x="685" y="25" width="155" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="m6" value="SysTaskLogMapper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="mapper-bg">
+          <mxGeometry x="855" y="25" width="145" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 数据层 -->
+        <mxCell id="data-bg" value="数据存储层" style="swimlane;startSize=30;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="80" y="680" width="1010" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" value="MySQL 8.0&#xa;(业务数据)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;" vertex="1" parent="data-bg">
+          <mxGeometry x="120" y="15" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" value="MinIO&#xa;(文件存储)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;" vertex="1" parent="data-bg">
+          <mxGeometry x="390" y="15" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" value="Redis&#xa;(会话缓存)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;" vertex="1" parent="data-bg">
+          <mxGeometry x="660" y="15" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- 箭头：前端→Controller -->
+        <mxCell id="e1" edge="1" source="browser" target="c3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 箭头：Controller→Business (示例) -->
+        <mxCell id="e2" value="HTTP 请求" style="edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="585" y="160" />
+              <mxPoint x="585" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
