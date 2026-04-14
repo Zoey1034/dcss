@@ -18,7 +18,7 @@ public interface ExportService {
      * @param keyword 关键字
      * @return Excel输出流
      */
-    ByteArrayOutputStream exportFiles(Integer status, String keyword);
+    ByteArrayOutputStream queryExportFiles(Integer status, String keyword);
 
     /**
      * 导出审核记录
@@ -28,15 +28,7 @@ public interface ExportService {
      * @param endDate 结束日期
      * @return Excel输出流
      */
-    ByteArrayOutputStream exportAuditRecords(Long fileId, String startDate, String endDate);
-
-    /**
-     * 导出统计报表
-     *
-     * @param type 报表类型
-     * @return Excel输出流
-     */
-    ByteArrayOutputStream exportReport(String type);
+    ByteArrayOutputStream queryExportAuditRecords(Long fileId, String startDate, String endDate);
 
     /**
      * 批量导出文件数据
@@ -44,6 +36,6 @@ public interface ExportService {
      * @param fileIds 文件ID列表
      * @return Excel输出流
      */
-    ByteArrayOutputStream batchExportFileData(List<Long> fileIds);
+    ByteArrayOutputStream queryBatchExportData(List<Long> fileIds);
 }
 

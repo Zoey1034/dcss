@@ -14,7 +14,7 @@ public interface ExtractService {
     /**
      * 获取编辑数据
      */
-    ExtractEditVO getEditData(Long fileId);
+    ExtractEditVO queryEditData(Long fileId);
 
     /**
      * 更新主表
@@ -29,7 +29,7 @@ public interface ExtractService {
     /**
      * 创建明细
      */
-    Long createDetail(ExtractDetailCreateDTO dto);
+    Long insertDetail(ExtractDetailCreateDTO dto);
 
     /**
      * 删除明细
@@ -39,6 +39,6 @@ public interface ExtractService {
     /**
      * 标记为已验证
      */
-    Boolean markAsVerified(Long detailId);
+    Boolean updateVerified(Long detailId);
 }
 

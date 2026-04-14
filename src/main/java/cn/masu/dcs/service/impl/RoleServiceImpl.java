@@ -32,7 +32,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     private final SnowflakeIdGenerator idGenerator;
 
     @Override
-    public Long createRole(RoleCreateDTO dto) {
+    public Long insertRole(RoleCreateDTO dto) {
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysRole::getRoleKey, dto.getRoleKey());
         if (baseMapper.selectCount(wrapper) > 0) {
@@ -71,7 +71,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     }
 
     @Override
-    public RoleVO getRoleDetail(Long id) {
+    public RoleVO queryRoleById(Long id) {
         SysRole role = baseMapper.selectById(id);
         if (role == null || role.getDeleted() == 1) {
             throw new BusinessException(ErrorCode.NOT_FOUND.getCode(), "Role not found");
@@ -81,7 +81,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     }
 
     @Override
-    public PageResult<RoleVO> getRolePage(Long current, Long size, String keyword, Integer status) {
+    public PageResult<RoleVO> queryRolePage(Long current, Long size, String keyword, Integer status) {
         Page<SysRole> page = new Page<>(current, size);
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysRole::getDeleted, 0);
@@ -109,7 +109,7 @@ public class RoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impleme
     }
 
     @Override
-    public List<RoleVO> getAllRoles() {
+    public List<RoleVO> queryAllRoles() {
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysRole::getDeleted, 0);
         wrapper.orderByAsc(SysRole::getId);

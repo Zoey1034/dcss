@@ -51,7 +51,7 @@ public class AuditServiceImpl extends ServiceImpl<AuditRecordMapper, AuditRecord
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean submitAudit(AuditSubmitDTO dto, Long auditorId) {
+    public Boolean insertAudit(AuditSubmitDTO dto, Long auditorId) {
         // 检查文件是否存在
         DocumentFile file = fileMapper.selectById(dto.getFileId());
         if (file == null) {
@@ -105,7 +105,7 @@ public class AuditServiceImpl extends ServiceImpl<AuditRecordMapper, AuditRecord
     }
 
     @Override
-    public List<AuditRecordVO> getAuditHistory(Long fileId) {
+    public List<AuditRecordVO> queryAuditHistory(Long fileId) {
         LambdaQueryWrapper<AuditRecord> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(AuditRecord::getFileId, fileId);
         wrapper.orderByDesc(AuditRecord::getCreateTime);
@@ -115,7 +115,7 @@ public class AuditServiceImpl extends ServiceImpl<AuditRecordMapper, AuditRecord
     }
 
     @Override
-    public PageResult<AuditRecordVO> getAuditPage(Long current, Long size, Integer auditStatus, Long auditorId) {
+    public PageResult<AuditRecordVO> queryAuditPage(Long current, Long size, Integer auditStatus, Long auditorId) {
         Page<AuditRecord> page = new Page<>(current, size);
         LambdaQueryWrapper<AuditRecord> wrapper = new LambdaQueryWrapper<>();
 
@@ -175,7 +175,7 @@ public class AuditServiceImpl extends ServiceImpl<AuditRecordMapper, AuditRecord
     }
 
     @Override
-    public String getFilePreviewUrl(Long fileId) {
+    public String queryFilePreviewUrl(Long fileId) {
         log.info("获取文件预览URL: fileId={}", fileId);
 
         // 查询文件信息
@@ -204,7 +204,7 @@ public class AuditServiceImpl extends ServiceImpl<AuditRecordMapper, AuditRecord
     }
 
     @Override
-    public Map<String, Object> getProcessResult(Long fileId) {
+    public Map<String, Object> queryProcessResult(Long fileId) {
         log.info("获取AI处理结果: fileId={}", fileId);
 
         // 查询提取主表数据
@@ -274,7 +274,7 @@ public class AuditServiceImpl extends ServiceImpl<AuditRecordMapper, AuditRecord
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean modifyFields(Long fileId, Map<String, Object> fields, Long auditorId) {
+    public Boolean updateFields(Long fileId, Map<String, Object> fields, Long auditorId) {
         log.info("修改字段: fileId={}, auditorId={}, fieldsCount={}", fileId, auditorId, fields != null ? fields.size() : 0);
 
         if (fields == null || fields.isEmpty()) {

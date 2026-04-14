@@ -18,7 +18,7 @@ public interface RoleService extends IService<SysRole> {
     /**
      * 创建角色
      */
-    Long createRole(RoleCreateDTO dto);
+    Long insertRole(RoleCreateDTO dto);
 
     /**
      * 更新角色
@@ -33,16 +33,16 @@ public interface RoleService extends IService<SysRole> {
     /**
      * 获取角色详情
      */
-    RoleVO getRoleDetail(Long id);
+    RoleVO queryRoleById(Long id);
 
     /**
      * 分页查询角色列表
      */
-    PageResult<RoleVO> getRolePage(Long current, Long size, String keyword, Integer status);
+    PageResult<RoleVO> queryRolePage(Long current, Long size, String keyword, Integer status);
 
     /**
      * 获取所有角色列表
      */
-    List<RoleVO> getAllRoles();
+    List<RoleVO> queryAllRoles();
 }
 

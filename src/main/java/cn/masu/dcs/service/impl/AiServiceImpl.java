@@ -1,5 +1,6 @@
 package cn.masu.dcs.service.impl;
 
+import cn.masu.dcs.common.constant.AiConstants;
 import cn.masu.dcs.common.exception.BusinessException;
 import cn.masu.dcs.common.result.ErrorCode;
 import cn.masu.dcs.dto.AiProcessRequest;
@@ -41,22 +42,7 @@ public class AiServiceImpl implements AiService {
     private final DocumentFileMapper fileMapper;
     private final SysDocTemplateMapper templateMapper;
 
-    /**
-     * 批量处理最大文件数限制
-     */
-    private static final int MAX_BATCH_FILES = 50;
 
-    /**
-     * 已归档状态
-     */
-    private static final int STATUS_ARCHIVED = 4;
-
-    /**
-     * 结果字段名常量
-     */
-    private static final String KEY_FILE_ID = "fileId";
-    private static final String KEY_AI_RESULT = "aiResult";
-    private static final String KEY_CONFIDENCE = "confidence_overall";
 
     @Override
     public AiProcessResponse uploadAndProcess(MultipartFile file, Long templateId, Long userId) {
@@ -70,7 +56,7 @@ public class AiServiceImpl implements AiService {
 
         try {
             // 1. 上传文件到MinIO并创建记录
-            Long fileId = fileService.uploadFile(file, templateId, userId);
+            Long fileId = fileService.insertFile(file, templateId, userId);
             log.info("文件上传成功: fileId={}, fileName={}", fileId, fileName);
 
             // 2. 调用AI服务解析
@@ -157,7 +143,7 @@ public class AiServiceImpl implements AiService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveVerifiedData(Long fileId, AiProcessResponse response) {
+    public void updateVerifiedData(Long fileId, AiProcessResponse response) {
         log.info("开始保存校对数据: fileId={}", fileId);
 
         // 校验数据一致性
@@ -170,7 +156,7 @@ public class AiServiceImpl implements AiService {
             // 获取文件实体并更新状态为已归档
             DocumentFile file = fileMapper.selectById(fileId);
             if (file != null) {
-                file.setProcessStatus(STATUS_ARCHIVED);
+                file.setProcessStatus(AiConstants.STATUS_ARCHIVED);
                 fileMapper.updateById(file);
             }
 
@@ -255,10 +241,10 @@ public class AiServiceImpl implements AiService {
             throw new BusinessException(ErrorCode.PARAM_ERROR.getCode(), "至少上传一个文件");
         }
 
-        if (files.length > MAX_BATCH_FILES) {
-            log.warn("批量上传文件数量超过限制: count={}, max={}", files.length, MAX_BATCH_FILES);
+        if (files.length > AiConstants.MAX_BATCH_FILES) {
+            log.warn("批量上传文件数量超过限制: count={}, max={}", files.length, AiConstants.MAX_BATCH_FILES);
             throw new BusinessException(ErrorCode.PARAM_ERROR.getCode(),
-                    "批量上传文件数量不能超过" + MAX_BATCH_FILES + "个");
+                    "批量上传文件数量不能超过" + AiConstants.MAX_BATCH_FILES + "个");
         }
     }
 
@@ -266,7 +252,7 @@ public class AiServiceImpl implements AiService {
      * 获取文件详情，不存在则抛异常
      */
     private FileDetailVO getFileDetailOrThrow(Long fileId) {
-        FileDetailVO fileDetail = fileService.getFileDetail(fileId);
+        FileDetailVO fileDetail = fileService.queryFileById(fileId);
         if (fileDetail == null) {
             log.error("文件不存在: fileId={}", fileId);
             throw new BusinessException(ErrorCode.FILE_NOT_FOUND);
@@ -369,8 +355,8 @@ public class AiServiceImpl implements AiService {
         AiProcessResponse response = new AiProcessResponse();
         response.setSuccess(true);
 
-        if (result.containsKey(KEY_FILE_ID)) {
-            Object fileIdObj = result.get(KEY_FILE_ID);
+        if (result.containsKey(AiConstants.KEY_FILE_ID)) {
+            Object fileIdObj = result.get(AiConstants.KEY_FILE_ID);
             if (fileIdObj instanceof Long) {
                 response.setFileId((Long) fileIdObj);
             } else if (fileIdObj instanceof Number) {
@@ -378,12 +364,12 @@ public class AiServiceImpl implements AiService {
             }
         }
 
-        if (result.containsKey(KEY_AI_RESULT)) {
-            Object aiResult = result.get(KEY_AI_RESULT);
+        if (result.containsKey(AiConstants.KEY_AI_RESULT)) {
+            Object aiResult = result.get(AiConstants.KEY_AI_RESULT);
             if (aiResult instanceof Map) {
                 Map<String, Object> aiResultMap = (Map<String, Object>) aiResult;
-                if (aiResultMap.containsKey(KEY_CONFIDENCE)) {
-                    Object conf = aiResultMap.get(KEY_CONFIDENCE);
+                if (aiResultMap.containsKey(AiConstants.KEY_CONFIDENCE)) {
+                    Object conf = aiResultMap.get(AiConstants.KEY_CONFIDENCE);
                     if (conf instanceof Number) {
                         response.setConfidence(((Number) conf).doubleValue());
                     }

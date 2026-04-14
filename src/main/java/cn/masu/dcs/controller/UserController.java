@@ -26,8 +26,8 @@ public class UserController {
      * 创建用户
      */
     @PostMapping
-    public R<Long> createUser(@Validated @RequestBody UserCreateDTO dto) {
-        Long id = userService.createUser(dto);
+    public R<Long> addUser(@Validated @RequestBody UserCreateDTO dto) {
+        Long id = userService.insertUser(dto);
         return R.ok("创建成功", id);
     }
 
@@ -35,7 +35,7 @@ public class UserController {
      * 更新用户
      */
     @PutMapping
-    public R<Boolean> updateUser(@Validated @RequestBody UserUpdateDTO dto) {
+    public R<Boolean> editUser(@Validated @RequestBody UserUpdateDTO dto) {
         Boolean result = userService.updateUser(dto);
         return R.ok("更新成功", result);
     }
@@ -44,7 +44,7 @@ public class UserController {
      * 删除用户
      */
     @DeleteMapping("/{id}")
-    public R<Boolean> deleteUser(@PathVariable Long id) {
+    public R<Boolean> removeUser(@PathVariable Long id) {
         Boolean result = userService.deleteUser(id);
         return R.ok("删除成功", result);
     }
@@ -54,7 +54,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public R<UserVO> getUserDetail(@PathVariable Long id) {
-        UserVO vo = userService.getUserDetail(id);
+        UserVO vo = userService.queryUserById(id);
         return R.ok(vo);
     }
 
@@ -62,12 +62,12 @@ public class UserController {
      * 分页查询用户列表
      */
     @GetMapping("/page")
-    public R<PageResult<UserVO>> getUserPage(
+    public R<PageResult<UserVO>> listUsers(
             @RequestParam(defaultValue = "1") Long current,
             @RequestParam(defaultValue = "10") Long size,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Integer status) {
-        PageResult<UserVO> pageResult = userService.getUserPage(current, size, keyword, status);
+        PageResult<UserVO> pageResult = userService.queryUserPage(current, size, keyword, status);
         return R.ok(pageResult);
     }
 
@@ -75,8 +75,8 @@ public class UserController {
      * 分配角色
      */
     @PostMapping("/assign-roles")
-    public R<Boolean> assignRoles(@Validated @RequestBody UserAssignRoleDTO dto) {
-        Boolean result = userService.assignRoles(dto);
+    public R<Boolean> editAssignRoles(@Validated @RequestBody UserAssignRoleDTO dto) {
+        Boolean result = userService.updateUserRoles(dto);
         return R.ok("角色分配成功", result);
     }
 
@@ -84,19 +84,19 @@ public class UserController {
      * 分配角色（别名接口，兼容前端）
      */
     @PostMapping("/assign-role")
-    public R<Boolean> assignRole(@Validated @RequestBody UserAssignRoleDTO dto) {
-        return assignRoles(dto);
+    public R<Boolean> editAssignRole(@Validated @RequestBody UserAssignRoleDTO dto) {
+        return editAssignRoles(dto);
     }
 
     /**
      * 修改密码
      */
     @PutMapping("/change-password")
-    public R<Boolean> changePassword(
+    public R<Boolean> editPassword(
             @RequestParam Long userId,
             @RequestParam String oldPassword,
             @RequestParam String newPassword) {
-        Boolean result = userService.changePassword(userId, oldPassword, newPassword);
+        Boolean result = userService.updatePassword(userId, oldPassword, newPassword);
         return R.ok("密码修改成功", result);
     }
 
@@ -104,8 +104,8 @@ public class UserController {
      * 重置密码
      */
     @PutMapping("/{id}/reset-password")
-    public R<Boolean> resetPassword(@PathVariable Long id, @RequestParam String newPassword) {
-        Boolean result = userService.resetPassword(id, newPassword);
+    public R<Boolean> editResetPassword(@PathVariable Long id, @RequestParam String newPassword) {
+        Boolean result = userService.updateResetPassword(id, newPassword);
         return R.ok("密码重置成功", result);
     }
 }

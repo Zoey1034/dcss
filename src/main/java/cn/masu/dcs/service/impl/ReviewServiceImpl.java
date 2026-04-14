@@ -50,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
     private static final DecimalFormat SIZE_FORMAT = new DecimalFormat("#.##");
 
     @Override
-    public PageResult<ReviewTaskVO> getPendingTasks(ReviewQueryDTO dto) {
+    public PageResult<ReviewTaskVO> queryPendingTasks(ReviewQueryDTO dto) {
         // 构建查询条件
         LambdaQueryWrapper<DocumentFile> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(DocumentFile::getProcessStatus, PROCESS_STATUS_NEED_REVIEW)
@@ -84,7 +84,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewDetailVO getReviewDetail(Long fileId) {
+    public ReviewDetailVO queryReviewById(Long fileId) {
         // 查询文件信息
         DocumentFile file = fileMapper.selectById(fileId);
         if (file == null) {
@@ -119,7 +119,7 @@ public class ReviewServiceImpl implements ReviewService {
         fileInfo.setFileType(file.getFileType());
         fileInfo.setFileSize(file.getFileSize());
         fileInfo.setFileSizeFormatted(formatFileSize(file.getFileSize()));
-        fileInfo.setPreviewUrl(getFilePreviewUrl(fileId));
+        fileInfo.setPreviewUrl(queryFilePreviewUrl(fileId));
         fileInfo.setCreateTime(dateToLocalDateTime(file.getCreateTime()));
         vo.setFileInfo(fileInfo);
 
@@ -147,7 +147,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean saveDraft(ReviewSaveDTO dto, Long userId) {
+    public Boolean insertDraft(ReviewSaveDTO dto, Long userId) {
         // 查询提取主表
         DocumentExtractMain extractMain = getExtractMain(dto.getFileId(), dto.getExtractMainId());
 
@@ -172,7 +172,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean completeReview(ReviewCompleteDTO dto, Long userId) {
+    public Boolean updateReviewComplete(ReviewCompleteDTO dto, Long userId) {
         // 查询提取主表
         DocumentExtractMain extractMain = getExtractMain(dto.getFileId(), dto.getExtractMainId());
 
@@ -203,7 +203,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<AuditHistoryVO> getAuditHistory(Long fileId) {
+    public List<AuditHistoryVO> queryAuditHistory(Long fileId) {
         LambdaQueryWrapper<AuditRecord> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(AuditRecord::getFileId, fileId)
                 .orderByDesc(AuditRecord::getCreateTime);
@@ -216,7 +216,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public String getFilePreviewUrl(Long fileId) {
+    public String queryFilePreviewUrl(Long fileId) {
         DocumentFile file = fileMapper.selectById(fileId);
         if (file == null) {
             throw new RuntimeException("文件不存在");
@@ -235,7 +235,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> batchComplete(List<Long> fileIds, Long userId) {
+    public Map<String, Object> updateBatchComplete(List<Long> fileIds, Long userId) {
         int successCount = 0;
         int failCount = 0;
         List<String> errors = new ArrayList<>();

@@ -17,7 +17,7 @@ public interface UserService extends IService<SysUser> {
     /**
      * 创建用户
      */
-    Long createUser(UserCreateDTO dto);
+    Long insertUser(UserCreateDTO dto);
 
     /**
      * 更新用户
@@ -32,36 +32,36 @@ public interface UserService extends IService<SysUser> {
     /**
      * 获取用户详情
      */
-    UserVO getUserDetail(Long id);
+    UserVO queryUserById(Long id);
 
     /**
      * 根据用户名获取用户
      */
-    SysUser getUserByUsername(String username);
+    SysUser queryUserByUsername(String username);
 
     /**
      * 分页查询用户列表
      */
-    PageResult<UserVO> getUserPage(Long current, Long size, String keyword, Integer status);
+    PageResult<UserVO> queryUserPage(Long current, Long size, String keyword, Integer status);
 
     /**
      * 分配角色
      */
-    Boolean assignRoles(UserAssignRoleDTO dto);
+    Boolean updateUserRoles(UserAssignRoleDTO dto);
 
     /**
      * 修改密码
      */
-    Boolean changePassword(Long userId, String oldPassword, String newPassword);
+    Boolean updatePassword(Long userId, String oldPassword, String newPassword);
 
     /**
      * 重置密码
      */
-    Boolean resetPassword(Long userId, String newPassword);
+    Boolean updateResetPassword(Long userId, String newPassword);
 
     /**
      * 使Token失效
      */
-    Boolean invalidateToken(Long userId);
+    Boolean deleteToken(Long userId);
 }
 

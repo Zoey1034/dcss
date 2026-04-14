@@ -25,7 +25,7 @@ public interface ReviewService {
      * @param dto 查询参数
      * @return 待审核任务分页列表
      */
-    PageResult<ReviewTaskVO> getPendingTasks(ReviewQueryDTO dto);
+    PageResult<ReviewTaskVO> queryPendingTasks(ReviewQueryDTO dto);
 
     /**
      * 获取任务详情
@@ -33,7 +33,7 @@ public interface ReviewService {
      * @param fileId 文件ID
      * @return 任务详情
      */
-    ReviewDetailVO getReviewDetail(Long fileId);
+    ReviewDetailVO queryReviewById(Long fileId);
 
     /**
      * 保存草稿
@@ -42,7 +42,7 @@ public interface ReviewService {
      * @param userId 用户ID
      * @return 保存结果
      */
-    Boolean saveDraft(ReviewSaveDTO dto, Long userId);
+    Boolean insertDraft(ReviewSaveDTO dto, Long userId);
 
     /**
      * 完成校对
@@ -51,7 +51,7 @@ public interface ReviewService {
      * @param userId 用户ID
      * @return 完成结果
      */
-    Boolean completeReview(ReviewCompleteDTO dto, Long userId);
+    Boolean updateReviewComplete(ReviewCompleteDTO dto, Long userId);
 
     /**
      * 获取审核历史
@@ -59,7 +59,7 @@ public interface ReviewService {
      * @param fileId 文件ID
      * @return 审核历史列表
      */
-    List<AuditHistoryVO> getAuditHistory(Long fileId);
+    List<AuditHistoryVO> queryAuditHistory(Long fileId);
 
     /**
      * 获取文件预览URL
@@ -67,7 +67,7 @@ public interface ReviewService {
      * @param fileId 文件ID
      * @return 预览URL
      */
-    String getFilePreviewUrl(Long fileId);
+    String queryFilePreviewUrl(Long fileId);
 
     /**
      * 批量完成校对
@@ -76,6 +76,6 @@ public interface ReviewService {
      * @param userId 用户ID
      * @return 处理结果
      */
-    Map<String, Object> batchComplete(List<Long> fileIds, Long userId);
+    Map<String, Object> updateBatchComplete(List<Long> fileIds, Long userId);
 }
 

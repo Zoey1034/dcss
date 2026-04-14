@@ -26,7 +26,7 @@ public class ExtractController {
      */
     @GetMapping("/edit/{fileId}")
     public R<ExtractEditVO> getEditData(@PathVariable Long fileId) {
-        ExtractEditVO vo = extractService.getEditData(fileId);
+        ExtractEditVO vo = extractService.queryEditData(fileId);
         return R.ok(vo);
     }
 
@@ -34,7 +34,7 @@ public class ExtractController {
      * 更新主表
      */
     @PutMapping("/main")
-    public R<Boolean> updateMain(@Validated @RequestBody ExtractMainUpdateDTO dto) {
+    public R<Boolean> editMain(@Validated @RequestBody ExtractMainUpdateDTO dto) {
         Boolean result = extractService.updateMain(dto);
         return R.ok("更新成功", result);
     }
@@ -43,7 +43,7 @@ public class ExtractController {
      * 更新明细
      */
     @PutMapping("/detail")
-    public R<Boolean> updateDetail(@Validated @RequestBody ExtractDetailUpdateDTO dto) {
+    public R<Boolean> editDetail(@Validated @RequestBody ExtractDetailUpdateDTO dto) {
         Boolean result = extractService.updateDetail(dto);
         return R.ok("更新成功", result);
     }
@@ -52,8 +52,8 @@ public class ExtractController {
      * 创建明细
      */
     @PostMapping("/detail")
-    public R<Long> createDetail(@Validated @RequestBody ExtractDetailCreateDTO dto) {
-        Long id = extractService.createDetail(dto);
+    public R<Long> addDetail(@Validated @RequestBody ExtractDetailCreateDTO dto) {
+        Long id = extractService.insertDetail(dto);
         return R.ok("创建成功", id);
     }
 
@@ -61,7 +61,7 @@ public class ExtractController {
      * 删除明细
      */
     @DeleteMapping("/detail/{id}")
-    public R<Boolean> deleteDetail(@PathVariable Long id) {
+    public R<Boolean> removeDetail(@PathVariable Long id) {
         Boolean result = extractService.deleteDetail(id);
         return R.ok("删除成功", result);
     }
@@ -70,8 +70,8 @@ public class ExtractController {
      * 标记为已验证
      */
     @PutMapping("/detail/{id}/verify")
-    public R<Boolean> markAsVerified(@PathVariable Long id) {
-        Boolean result = extractService.markAsVerified(id);
+    public R<Boolean> editVerified(@PathVariable Long id) {
+        Boolean result = extractService.updateVerified(id);
         return R.ok("标记成功", result);
     }
 }

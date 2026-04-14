@@ -1,6 +1,6 @@
 package cn.masu.dcs.controller;
 
-import cn.masu.dcs.common.result.R;
+import cn.masu.dcs.business.ExportBusiness;
 import cn.masu.dcs.service.ExportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +30,7 @@ import java.util.List;
 public class ExportController {
 
     private final ExportService exportService;
+    private final ExportBusiness exportBusiness;
 
     /**
      * 导出文件列表为Excel
@@ -46,7 +47,7 @@ public class ExportController {
         log.info("导出文件列表: status={}, keyword={}", status, keyword);
 
         try {
-            ByteArrayOutputStream outputStream = exportService.exportFiles(status, keyword);
+            ByteArrayOutputStream outputStream = exportService.queryExportFiles(status, keyword);
 
             String fileName = "文件列表_" + System.currentTimeMillis() + ".xlsx";
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
@@ -81,7 +82,7 @@ public class ExportController {
             fileId, startDate, endDate);
 
         try {
-            ByteArrayOutputStream outputStream = exportService.exportAuditRecords(
+            ByteArrayOutputStream outputStream = exportService.queryExportAuditRecords(
                 fileId, startDate, endDate);
 
             String fileName = "审核记录_" + System.currentTimeMillis() + ".xlsx";
@@ -102,7 +103,7 @@ public class ExportController {
     /**
      * 导出统计报表
      *
-     * @param type 报表类型（overview/trend/efficiency）
+     * @param type 报表类型（overview/trend）
      * @return Excel文件
      */
     @GetMapping("/report/{type}")
@@ -110,7 +111,7 @@ public class ExportController {
         log.info("导出统计报表: type={}", type);
 
         try {
-            ByteArrayOutputStream outputStream = exportService.exportReport(type);
+            ByteArrayOutputStream outputStream = exportBusiness.generateReport(type);
 
             String fileName = "统计报表_" + type + "_" + System.currentTimeMillis() + ".xlsx";
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
@@ -138,7 +139,7 @@ public class ExportController {
         log.info("批量导出文件数据: count={}", fileIds.size());
 
         try {
-            ByteArrayOutputStream outputStream = exportService.batchExportFileData(fileIds);
+            ByteArrayOutputStream outputStream = exportService.queryBatchExportData(fileIds);
 
             String fileName = "批量导出_" + System.currentTimeMillis() + ".xlsx";
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
@@ -155,4 +156,5 @@ public class ExportController {
         }
     }
 }
+
 

@@ -38,7 +38,7 @@ public class ClassificationServiceImpl implements ClassificationService {
     private final ObjectMapper objectMapper;
 
     @Override
-    public List<Map<String, Object>> getDocumentTypeStatistics() {
+    public List<Map<String, Object>> queryDocumentTypeStatistics() {
         // 查询所有已处理的文件
         List<DocumentExtractMain> allExtracts = extractMainMapper.selectList(
                 new LambdaQueryWrapper<DocumentExtractMain>()
@@ -68,7 +68,7 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
-    public PageResult<DocumentClassificationVO> getDocumentsByType(
+    public PageResult<DocumentClassificationVO> queryDocumentsByType(
             String documentType, Long current, Long size, String keyword) {
 
         // 构建查询条件
@@ -100,7 +100,7 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
-    public DocumentDetailVO getDocumentDetail(String fileId) {
+    public DocumentDetailVO queryDocumentById(String fileId) {
         Long id = Long.parseLong(fileId);
 
         // 查询文件信息
@@ -121,7 +121,7 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
-    public PageResult<DocumentClassificationVO> searchDocuments(
+    public PageResult<DocumentClassificationVO> queryDocumentsByKeyword(
             String keyword, Long current, Long size) {
 
         LambdaQueryWrapper<DocumentExtractMain> wrapper = new LambdaQueryWrapper<>();

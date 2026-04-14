@@ -28,8 +28,8 @@ public class RoleController {
      * 创建角色
      */
     @PostMapping
-    public R<Long> createRole(@Validated @RequestBody RoleCreateDTO dto) {
-        Long id = roleService.createRole(dto);
+    public R<Long> addRole(@Validated @RequestBody RoleCreateDTO dto) {
+        Long id = roleService.insertRole(dto);
         return R.ok("创建成功", id);
     }
 
@@ -37,7 +37,7 @@ public class RoleController {
      * 更新角色
      */
     @PutMapping
-    public R<Boolean> updateRole(@Validated @RequestBody RoleUpdateDTO dto) {
+    public R<Boolean> editRole(@Validated @RequestBody RoleUpdateDTO dto) {
         Boolean result = roleService.updateRole(dto);
         return R.ok("更新成功", result);
     }
@@ -46,7 +46,7 @@ public class RoleController {
      * 删除角色
      */
     @DeleteMapping("/{id}")
-    public R<Boolean> deleteRole(@PathVariable Long id) {
+    public R<Boolean> removeRole(@PathVariable Long id) {
         Boolean result = roleService.deleteRole(id);
         return R.ok("删除成功", result);
     }
@@ -56,7 +56,7 @@ public class RoleController {
      */
     @GetMapping("/{id}")
     public R<RoleVO> getRoleDetail(@PathVariable Long id) {
-        RoleVO vo = roleService.getRoleDetail(id);
+        RoleVO vo = roleService.queryRoleById(id);
         return R.ok(vo);
     }
 
@@ -64,12 +64,12 @@ public class RoleController {
      * 分页查询角色列表
      */
     @GetMapping("/page")
-    public R<PageResult<RoleVO>> getRolePage(
+    public R<PageResult<RoleVO>> listRoles(
             @RequestParam(defaultValue = "1") Long current,
             @RequestParam(defaultValue = "10") Long size,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Integer status) {
-        PageResult<RoleVO> pageResult = roleService.getRolePage(current, size, keyword, status);
+        PageResult<RoleVO> pageResult = roleService.queryRolePage(current, size, keyword, status);
         return R.ok(pageResult);
     }
 }

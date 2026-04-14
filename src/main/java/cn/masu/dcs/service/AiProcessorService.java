@@ -39,5 +39,5 @@ public interface AiProcessorService {
      *
      * @return 服务状态信息
      */
-    Map<String, Object> getServiceStatus();
+    Map<String, Object> queryServiceStatus();
 }

@@ -53,7 +53,7 @@ public interface AiService {
      * @param fileId   文件ID
      * @param response 校对后的数据
      */
-    void saveVerifiedData(Long fileId, AiProcessResponse response);
+    void updateVerifiedData(Long fileId, AiProcessResponse response);
 
     /**
      * 批量上传与解析

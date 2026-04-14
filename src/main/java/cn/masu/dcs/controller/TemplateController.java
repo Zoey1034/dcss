@@ -28,8 +28,8 @@ public class TemplateController {
      * 创建模板
      */
     @PostMapping
-    public R<Long> createTemplate(@Validated @RequestBody TemplateCreateDTO dto) {
-        Long id = templateService.createTemplate(dto);
+    public R<Long> addTemplate(@Validated @RequestBody TemplateCreateDTO dto) {
+        Long id = templateService.insertTemplate(dto);
         return R.ok("创建成功", id);
     }
 
@@ -37,7 +37,7 @@ public class TemplateController {
      * 更新模板
      */
     @PutMapping
-    public R<Boolean> updateTemplate(@Validated @RequestBody TemplateUpdateDTO dto) {
+    public R<Boolean> editTemplate(@Validated @RequestBody TemplateUpdateDTO dto) {
         Boolean result = templateService.updateTemplate(dto);
         return R.ok("更新成功", result);
     }
@@ -46,7 +46,7 @@ public class TemplateController {
      * 删除模板
      */
     @DeleteMapping("/{id}")
-    public R<Boolean> deleteTemplate(@PathVariable Long id) {
+    public R<Boolean> removeTemplate(@PathVariable Long id) {
         Boolean result = templateService.deleteTemplate(id);
         return R.ok("删除成功", result);
     }
@@ -56,7 +56,7 @@ public class TemplateController {
      */
     @GetMapping("/{id}")
     public R<TemplateVO> getTemplateDetail(@PathVariable Long id) {
-        TemplateVO vo = templateService.getTemplateDetail(id);
+        TemplateVO vo = templateService.queryTemplateById(id);
         return R.ok(vo);
     }
 
@@ -65,7 +65,7 @@ public class TemplateController {
      */
     @GetMapping("/code/{code}")
     public R<TemplateVO> getTemplateByCode(@PathVariable String code) {
-        TemplateVO vo = templateService.getTemplateByCode(code);
+        TemplateVO vo = templateService.queryTemplateByCode(code);
         return R.ok(vo);
     }
 
@@ -73,12 +73,12 @@ public class TemplateController {
      * 分页查询模板列表
      */
     @GetMapping("/page")
-    public R<PageResult<TemplateVO>> getTemplatePage(
+    public R<PageResult<TemplateVO>> listTemplates(
             @RequestParam(defaultValue = "1") Long current,
             @RequestParam(defaultValue = "10") Long size,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Integer status) {
-        PageResult<TemplateVO> pageResult = templateService.getTemplatePage(current, size, keyword, status);
+        PageResult<TemplateVO> pageResult = templateService.queryTemplatePage(current, size, keyword, status);
         return R.ok(pageResult);
     }
 
@@ -86,8 +86,8 @@ public class TemplateController {
      * 启用/禁用模板
      */
     @PutMapping("/{id}/status")
-    public R<Boolean> toggleTemplateStatus(@PathVariable Long id, @RequestParam Integer status) {
-        Boolean result = templateService.toggleTemplateStatus(id, status);
+    public R<Boolean> editTemplateStatus(@PathVariable Long id, @RequestParam Integer status) {
+        Boolean result = templateService.updateTemplateStatus(id, status);
         return R.ok("状态更新成功", result);
     }
 }

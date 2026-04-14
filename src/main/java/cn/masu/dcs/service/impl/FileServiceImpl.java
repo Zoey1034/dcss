@@ -44,7 +44,7 @@ public class FileServiceImpl extends ServiceImpl<DocumentFileMapper, DocumentFil
     private final DocumentExtractMainMapper extractMainMapper;
 
     @Override
-    public Long uploadFile(MultipartFile file, Long templateId, Long userId) {
+    public Long insertFile(MultipartFile file, Long templateId, Long userId) {
         if (file == null || file.isEmpty()) {
             throw new BusinessException(ErrorCode.FILE_UPLOAD_ERROR.getCode(), "File cannot be empty");
         }
@@ -91,7 +91,7 @@ public class FileServiceImpl extends ServiceImpl<DocumentFileMapper, DocumentFil
     }
 
     @Override
-    public byte[] downloadFile(Long id) {
+    public byte[] queryFileContent(Long id) {
         DocumentFile file = baseMapper.selectById(id);
         if (file == null) {
             throw new BusinessException(ErrorCode.FILE_NOT_FOUND);
@@ -139,7 +139,7 @@ public class FileServiceImpl extends ServiceImpl<DocumentFileMapper, DocumentFil
     }
 
     @Override
-    public FileDetailVO getFileDetail(Long id) {
+    public FileDetailVO queryFileById(Long id) {
         DocumentFile file = baseMapper.selectById(id);
         if (file == null) {
             throw new BusinessException(ErrorCode.FILE_NOT_FOUND);
@@ -168,7 +168,7 @@ public class FileServiceImpl extends ServiceImpl<DocumentFileMapper, DocumentFil
     }
 
     @Override
-    public PageResult<FileDetailVO> getFilePage(Long current, Long size, String keyword, Integer status, Long userId) {
+    public PageResult<FileDetailVO> queryFilePage(Long current, Long size, String keyword, Integer status, Long userId) {
         Page<DocumentFile> page = new Page<>(current, size);
         LambdaQueryWrapper<DocumentFile> wrapper = new LambdaQueryWrapper<>();
 

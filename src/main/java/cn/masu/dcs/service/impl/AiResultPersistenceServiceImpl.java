@@ -1,5 +1,6 @@
 package cn.masu.dcs.service.impl;
 
+import cn.masu.dcs.common.constant.AiConstants;
 import cn.masu.dcs.common.exception.BusinessException;
 import cn.masu.dcs.common.result.ErrorCode;
 import cn.masu.dcs.common.util.SnowflakeIdGenerator;
@@ -41,29 +42,18 @@ public class AiResultPersistenceServiceImpl implements AiResultPersistenceServic
     private static final int STATUS_PENDING = 0;
     private static final int STATUS_UNVERIFIED = 0;
 
-    private static final String FIELD_BASIC_INFO = "basic_info";
-    private static final String FIELD_ACADEMIC_INFO = "academic_info";
-    private static final String FIELD_CERTIFICATE_INFO = "certificate_info";
-    private static final String FIELD_FINANCIAL_INFO = "financial_info";
-    private static final String FIELD_LEAVE_INFO = "leave_info";
-    private static final String FIELD_TABLES = "tables";
-    private static final String FIELD_FIELDS = "fields";
-    private static final String FIELD_COURSES = "courses";
-    private static final String FIELD_DOCUMENT_TYPE = "document_type";
-    private static final String FIELD_TEXT = "text";
-    private static final String FIELD_SUMMARY = "summary";
-    private static final String FIELD_CONFIDENCE = "confidence_overall";
-    private static final String FIELD_NAME = "name";
-    private static final String FIELD_STUDENT_ID = "student_id";
-    private static final String FIELD_ID_NUMBER = "id_number";
-    private static final String FIELD_COURSE = "course";
+    /** 课程名字段（本地扩展字段，不在通用 AiConstants 中） */
     private static final String FIELD_COURSE_NAME = "course_name";
+
+    /** 成绩字段 */
     private static final String FIELD_SCORE = "score";
+
+    /** 等级字段 */
     private static final String FIELD_GRADE = "grade";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveAiResult(Long fileId, JsonNode aiResult, String fileUrl) {
+    public void insertAiResult(Long fileId, JsonNode aiResult, String fileUrl) {
         try {
             DocumentExtractMain extractMain = buildExtractMain(fileId, aiResult, fileUrl);
             extractMainMapper.insert(extractMain);
@@ -98,10 +88,10 @@ public class AiResultPersistenceServiceImpl implements AiResultPersistenceServic
         DocumentExtractMain extractMain = new DocumentExtractMain();
         extractMain.setId(idGenerator.nextId());
         extractMain.setFileId(fileId);
-        extractMain.setDocumentType(getStringFromJson(aiResult, FIELD_DOCUMENT_TYPE));
+        extractMain.setDocumentType(getStringFromJson(aiResult, AiConstants.FIELD_DOCUMENT_TYPE));
         extractMain.setDocumentUrl(fileUrl);
-        extractMain.setRawText(getStringFromJson(aiResult, FIELD_TEXT));
-        extractMain.setSummary(getStringFromJson(aiResult, FIELD_SUMMARY));
+        extractMain.setRawText(getStringFromJson(aiResult, AiConstants.FIELD_TEXT));
+        extractMain.setSummary(getStringFromJson(aiResult, AiConstants.FIELD_SUMMARY));
         extractMain.setConfidence(getConfidenceFromJson(aiResult));
         extractMain.setExtractResult(objectMapper.writeValueAsString(aiResult));
         extractMain.setStatus(STATUS_PENDING);
@@ -116,13 +106,13 @@ public class AiResultPersistenceServiceImpl implements AiResultPersistenceServic
      * 提取基本信息到主表
      */
     private void extractBasicInfo(DocumentExtractMain extractMain, JsonNode aiResult) {
-        if (!aiResult.has(FIELD_BASIC_INFO) || !aiResult.get(FIELD_BASIC_INFO).isObject()) {
+        if (!aiResult.has(AiConstants.FIELD_BASIC_INFO) || !aiResult.get(AiConstants.FIELD_BASIC_INFO).isObject()) {
             return;
         }
-        JsonNode basicInfo = aiResult.get(FIELD_BASIC_INFO);
-        String name = getStringFromJson(basicInfo, FIELD_NAME);
-        String studentId = getStringFromJson(basicInfo, FIELD_STUDENT_ID);
-        String idNumber = getStringFromJson(basicInfo, FIELD_ID_NUMBER);
+        JsonNode basicInfo = aiResult.get(AiConstants.FIELD_BASIC_INFO);
+        String name = getStringFromJson(basicInfo, AiConstants.FIELD_NAME);
+        String studentId = getStringFromJson(basicInfo, AiConstants.FIELD_STUDENT_ID);
+        String idNumber = getStringFromJson(basicInfo, AiConstants.FIELD_ID_NUMBER);
 
         if (StringUtils.hasText(name)) {
             extractMain.setOwnerName(name);
@@ -138,26 +128,26 @@ public class AiResultPersistenceServiceImpl implements AiResultPersistenceServic
      * 提取各类JSON字段
      */
     private void extractJsonFields(DocumentExtractMain extractMain, JsonNode aiResult) throws Exception {
-        if (aiResult.has(FIELD_BASIC_INFO) && aiResult.get(FIELD_BASIC_INFO).isObject()) {
-            extractMain.setBasicInfoJson(objectMapper.writeValueAsString(aiResult.get(FIELD_BASIC_INFO)));
+        if (aiResult.has(AiConstants.FIELD_BASIC_INFO) && aiResult.get(AiConstants.FIELD_BASIC_INFO).isObject()) {
+            extractMain.setBasicInfoJson(objectMapper.writeValueAsString(aiResult.get(AiConstants.FIELD_BASIC_INFO)));
         }
-        if (aiResult.has(FIELD_ACADEMIC_INFO) && aiResult.get(FIELD_ACADEMIC_INFO).isObject()) {
-            extractMain.setAcademicInfoJson(objectMapper.writeValueAsString(aiResult.get(FIELD_ACADEMIC_INFO)));
+        if (aiResult.has(AiConstants.FIELD_ACADEMIC_INFO) && aiResult.get(AiConstants.FIELD_ACADEMIC_INFO).isObject()) {
+            extractMain.setAcademicInfoJson(objectMapper.writeValueAsString(aiResult.get(AiConstants.FIELD_ACADEMIC_INFO)));
         }
-        if (aiResult.has(FIELD_CERTIFICATE_INFO) && aiResult.get(FIELD_CERTIFICATE_INFO).isObject()) {
-            extractMain.setCertificateInfoJson(objectMapper.writeValueAsString(aiResult.get(FIELD_CERTIFICATE_INFO)));
+        if (aiResult.has(AiConstants.FIELD_CERTIFICATE_INFO) && aiResult.get(AiConstants.FIELD_CERTIFICATE_INFO).isObject()) {
+            extractMain.setCertificateInfoJson(objectMapper.writeValueAsString(aiResult.get(AiConstants.FIELD_CERTIFICATE_INFO)));
         }
-        if (aiResult.has(FIELD_FINANCIAL_INFO) && aiResult.get(FIELD_FINANCIAL_INFO).isObject()) {
-            extractMain.setFinancialInfoJson(objectMapper.writeValueAsString(aiResult.get(FIELD_FINANCIAL_INFO)));
+        if (aiResult.has(AiConstants.FIELD_FINANCIAL_INFO) && aiResult.get(AiConstants.FIELD_FINANCIAL_INFO).isObject()) {
+            extractMain.setFinancialInfoJson(objectMapper.writeValueAsString(aiResult.get(AiConstants.FIELD_FINANCIAL_INFO)));
         }
-        if (aiResult.has(FIELD_LEAVE_INFO) && aiResult.get(FIELD_LEAVE_INFO).isObject()) {
-            extractMain.setLeaveInfoJson(objectMapper.writeValueAsString(aiResult.get(FIELD_LEAVE_INFO)));
+        if (aiResult.has(AiConstants.FIELD_LEAVE_INFO) && aiResult.get(AiConstants.FIELD_LEAVE_INFO).isObject()) {
+            extractMain.setLeaveInfoJson(objectMapper.writeValueAsString(aiResult.get(AiConstants.FIELD_LEAVE_INFO)));
         }
-        if (aiResult.has(FIELD_TABLES) && aiResult.get(FIELD_TABLES).isArray()) {
-            extractMain.setTablesJson(objectMapper.writeValueAsString(aiResult.get(FIELD_TABLES)));
+        if (aiResult.has(AiConstants.FIELD_TABLES) && aiResult.get(AiConstants.FIELD_TABLES).isArray()) {
+            extractMain.setTablesJson(objectMapper.writeValueAsString(aiResult.get(AiConstants.FIELD_TABLES)));
         }
-        if (aiResult.has(FIELD_FIELDS) && aiResult.get(FIELD_FIELDS).isObject()) {
-            extractMain.setKvDataJson(objectMapper.writeValueAsString(aiResult.get(FIELD_FIELDS)));
+        if (aiResult.has(AiConstants.FIELD_FIELDS) && aiResult.get(AiConstants.FIELD_FIELDS).isObject()) {
+            extractMain.setKvDataJson(objectMapper.writeValueAsString(aiResult.get(AiConstants.FIELD_FIELDS)));
         }
     }
 
@@ -165,10 +155,10 @@ public class AiResultPersistenceServiceImpl implements AiResultPersistenceServic
      * 保存课程详情
      */
     private void saveCourseDetails(Long fileId, Long mainId, JsonNode aiResult) {
-        if (!aiResult.has(FIELD_COURSES) || !aiResult.get(FIELD_COURSES).isArray()) {
+        if (!aiResult.has(AiConstants.FIELD_COURSES) || !aiResult.get(AiConstants.FIELD_COURSES).isArray()) {
             return;
         }
-        JsonNode courses = aiResult.get(FIELD_COURSES);
+        JsonNode courses = aiResult.get(AiConstants.FIELD_COURSES);
         int rowIndex = 0;
         for (JsonNode course : courses) {
             DocumentExtractDetail detail = new DocumentExtractDetail();
@@ -179,8 +169,8 @@ public class AiResultPersistenceServiceImpl implements AiResultPersistenceServic
             detail.setRowDataJson(course.toString());
             detail.setIsVerified(STATUS_UNVERIFIED);
 
-            if (course.has(FIELD_COURSE)) {
-                detail.setFieldName(course.get(FIELD_COURSE).asText());
+            if (course.has(AiConstants.FIELD_COURSE)) {
+                detail.setFieldName(course.get(AiConstants.FIELD_COURSE).asText());
             } else if (course.has(FIELD_COURSE_NAME)) {
                 detail.setFieldName(course.get(FIELD_COURSE_NAME).asText());
             }
@@ -202,8 +192,8 @@ public class AiResultPersistenceServiceImpl implements AiResultPersistenceServic
     }
 
     private Double getConfidenceFromJson(JsonNode aiResult) {
-        if (aiResult.has(FIELD_CONFIDENCE) && !aiResult.get(FIELD_CONFIDENCE).isNull()) {
-            return aiResult.get(FIELD_CONFIDENCE).asDouble();
+        if (aiResult.has(AiConstants.FIELD_CONFIDENCE) && !aiResult.get(AiConstants.FIELD_CONFIDENCE).isNull()) {
+            return aiResult.get(AiConstants.FIELD_CONFIDENCE).asDouble();
         }
         return null;
     }

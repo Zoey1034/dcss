@@ -22,7 +22,7 @@ public interface AuditService extends IService<AuditRecord> {
      * @param auditorId 审核人ID
      * @return 提交是否成功
      */
-    Boolean submitAudit(AuditSubmitDTO dto, Long auditorId);
+    Boolean insertAudit(AuditSubmitDTO dto, Long auditorId);
 
     /**
      * 获取文件的审核历史
@@ -30,7 +30,7 @@ public interface AuditService extends IService<AuditRecord> {
      * @param fileId 文件ID
      * @return 审核记录列表
      */
-    List<AuditRecordVO> getAuditHistory(Long fileId);
+    List<AuditRecordVO> queryAuditHistory(Long fileId);
 
     /**
      * 分页查询审核记录
@@ -41,7 +41,7 @@ public interface AuditService extends IService<AuditRecord> {
      * @param auditorId 审核人ID（可选）
      * @return 审核记录分页结果
      */
-    PageResult<AuditRecordVO> getAuditPage(Long current, Long size, Integer auditStatus, Long auditorId);
+    PageResult<AuditRecordVO> queryAuditPage(Long current, Long size, Integer auditStatus, Long auditorId);
 
     /**
      * 获取文件预览URL（MinIO预签名链接）
@@ -49,7 +49,7 @@ public interface AuditService extends IService<AuditRecord> {
      * @param fileId 文件ID
      * @return MinIO预签名访问URL
      */
-    String getFilePreviewUrl(Long fileId);
+    String queryFilePreviewUrl(Long fileId);
 
     /**
      * 获取AI处理结果
@@ -57,7 +57,7 @@ public interface AuditService extends IService<AuditRecord> {
      * @param fileId 文件ID
      * @return AI处理结果（包含KV数据和完整提取结果）
      */
-    Map<String, Object> getProcessResult(Long fileId);
+    Map<String, Object> queryProcessResult(Long fileId);
 
     /**
      * 修改字段
@@ -67,6 +67,6 @@ public interface AuditService extends IService<AuditRecord> {
      * @param auditorId 审核人ID
      * @return 修改是否成功
      */
-    Boolean modifyFields(Long fileId, Map<String, Object> fields, Long auditorId);
+    Boolean updateFields(Long fileId, Map<String, Object> fields, Long auditorId);
 }
 

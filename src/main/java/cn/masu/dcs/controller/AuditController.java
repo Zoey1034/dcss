@@ -31,9 +31,9 @@ public class AuditController {
      * 提交审核，审计人从认证上下文获取
      */
     @PostMapping("/submit")
-    public R<Boolean> submitAudit(@Validated @RequestBody AuditSubmitDTO dto) {
+    public R<Boolean> addAudit(@Validated @RequestBody AuditSubmitDTO dto) {
         Long auditorId = currentUserId();
-        Boolean result = auditService.submitAudit(dto, auditorId);
+        Boolean result = auditService.insertAudit(dto, auditorId);
         return R.ok("审核提交成功", result);
     }
 
@@ -41,8 +41,8 @@ public class AuditController {
      * 获取审核历史
      */
     @GetMapping("/history/{fileId}")
-    public R<List<AuditRecordVO>> getAuditHistory(@PathVariable Long fileId) {
-        List<AuditRecordVO> records = auditService.getAuditHistory(fileId);
+    public R<List<AuditRecordVO>> listAuditHistory(@PathVariable Long fileId) {
+        List<AuditRecordVO> records = auditService.queryAuditHistory(fileId);
         return R.ok(records);
     }
 
@@ -50,12 +50,12 @@ public class AuditController {
      * 分页查询审核记录
      */
     @GetMapping("/page")
-    public R<PageResult<AuditRecordVO>> getAuditPage(
+    public R<PageResult<AuditRecordVO>> listAuditPage(
             @RequestParam(defaultValue = "1") Long current,
             @RequestParam(defaultValue = "10") Long size,
             @RequestParam(required = false) Integer auditStatus,
             @RequestParam(required = false) Long auditorId) {
-        PageResult<AuditRecordVO> pageResult = auditService.getAuditPage(current, size, auditStatus, auditorId);
+        PageResult<AuditRecordVO> pageResult = auditService.queryAuditPage(current, size, auditStatus, auditorId);
         return R.ok(pageResult);
     }
 
@@ -64,7 +64,7 @@ public class AuditController {
      */
     @GetMapping("/preview/{fileId}")
     public R<String> getFilePreviewUrl(@PathVariable Long fileId) {
-        String url = auditService.getFilePreviewUrl(fileId);
+        String url = auditService.queryFilePreviewUrl(fileId);
         return R.ok("获取预览链接成功", url);
     }
 
@@ -73,7 +73,7 @@ public class AuditController {
      */
     @GetMapping("/result/{fileId}")
     public R<Map<String, Object>> getProcessResult(@PathVariable Long fileId) {
-        Map<String, Object> result = auditService.getProcessResult(fileId);
+        Map<String, Object> result = auditService.queryProcessResult(fileId);
         return R.ok("获取处理结果成功", result);
     }
 
@@ -81,9 +81,9 @@ public class AuditController {
      * 审核人员修改字段并保存
      */
     @PostMapping("/modify/{fileId}")
-    public R<Boolean> modifyFields(@PathVariable Long fileId, @RequestBody Map<String, Object> fields) {
+    public R<Boolean> editFields(@PathVariable Long fileId, @RequestBody Map<String, Object> fields) {
         Long auditorId = currentUserId();
-        Boolean success = auditService.modifyFields(fileId, fields, auditorId);
+        Boolean success = auditService.updateFields(fileId, fields, auditorId);
         return R.ok("字段修改成功", success);
     }
 

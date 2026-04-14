@@ -13,7 +13,7 @@ public interface TemplateService extends IService<SysDocTemplate> {
     /**
      * 创建模板
      */
-    Long createTemplate(TemplateCreateDTO dto);
+    Long insertTemplate(TemplateCreateDTO dto);
     /**
      * 更新模板
      */
@@ -25,17 +25,17 @@ public interface TemplateService extends IService<SysDocTemplate> {
     /**
      * 获取模板详情
      */
-    TemplateVO getTemplateDetail(Long id);
+    TemplateVO queryTemplateById(Long id);
     /**
      * 根据编码获取模板
      */
-    TemplateVO getTemplateByCode(String code);
+    TemplateVO queryTemplateByCode(String code);
     /**
      * 分页查询模板列表
      */
-    PageResult<TemplateVO> getTemplatePage(Long current, Long size, String keyword, Integer status);
+    PageResult<TemplateVO> queryTemplatePage(Long current, Long size, String keyword, Integer status);
     /**
      * 启用/禁用模板
      */
-    Boolean toggleTemplateStatus(Long id, Integer status);
+    Boolean updateTemplateStatus(Long id, Integer status);
 }

@@ -16,7 +16,7 @@ public interface TaskLogService extends IService<SysTaskLog> {
     /**
      * 创建任务日志
      */
-    Long createTaskLog(String taskName, String taskType, Long targetId);
+    Long insertTaskLog(String taskName, String taskType, Long targetId);
 
     /**
      * 更新任务状态为成功
@@ -31,16 +31,16 @@ public interface TaskLogService extends IService<SysTaskLog> {
     /**
      * 获取任务详情
      */
-    TaskLogVO getTaskDetail(Long id);
+    TaskLogVO queryTaskById(Long id);
 
     /**
      * 分页查询任务日志
      */
-    PageResult<TaskLogVO> getTaskPage(Long current, Long size, String taskType, Integer status, Date startDate, Date endDate);
+    PageResult<TaskLogVO> queryTaskPage(Long current, Long size, String taskType, Integer status, Date startDate, Date endDate);
 
     /**
      * 获取任务统计信息
      */
-    Object getTaskStatistics();
+    Object queryTaskStatistics();
 }
 

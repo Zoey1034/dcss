@@ -23,7 +23,7 @@ public interface FileService extends IService<DocumentFile> {
      * @param userId     用户ID
      * @return 文件ID
      */
-    Long uploadFile(MultipartFile file, Long templateId, Long userId);
+    Long insertFile(MultipartFile file, Long templateId, Long userId);
 
     /**
      * 下载文件
@@ -31,7 +31,7 @@ public interface FileService extends IService<DocumentFile> {
      * @param id 文件ID
      * @return 文件字节数组
      */
-    byte[] downloadFile(Long id);
+    byte[] queryFileContent(Long id);
 
     /**
      * 删除文件
@@ -47,7 +47,7 @@ public interface FileService extends IService<DocumentFile> {
      * @param id 文件ID
      * @return 文件详情
      */
-    FileDetailVO getFileDetail(Long id);
+    FileDetailVO queryFileById(Long id);
 
     /**
      * 更新文件状态
@@ -76,6 +76,6 @@ public interface FileService extends IService<DocumentFile> {
      * @param userId  用户ID
      * @return 分页结果
      */
-    PageResult<FileDetailVO> getFilePage(Long current, Long size, String keyword, Integer status, Long userId);
+    PageResult<FileDetailVO> queryFilePage(Long current, Long size, String keyword, Integer status, Long userId);
 }
 

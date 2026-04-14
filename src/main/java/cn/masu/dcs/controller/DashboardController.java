@@ -38,7 +38,7 @@ public class DashboardController {
     @GetMapping("/overview")
     public R<DashboardOverviewVO> getOverview() {
         log.info("获取驾驶舱概览数据");
-        DashboardOverviewVO overview = dashboardService.getOverview();
+        DashboardOverviewVO overview = dashboardService.queryOverview();
         return R.ok(overview);
     }
 
@@ -65,7 +65,7 @@ public class DashboardController {
     @GetMapping("/trend")
     public R<DashboardTrendVO> getTrend(@RequestParam(defaultValue = "7") Integer days) {
         log.info("获取趋势数据: days={}", days);
-        DashboardTrendVO trend = dashboardService.getTrend(days);
+        DashboardTrendVO trend = dashboardService.queryTrend(days);
         return R.ok(trend);
     }
 
@@ -77,7 +77,7 @@ public class DashboardController {
     @GetMapping("/efficiency")
     public R<EfficiencyAnalysisVO> getEfficiencyAnalysis() {
         log.info("获取效率分析数据");
-        EfficiencyAnalysisVO efficiency = dashboardService.getEfficiencyAnalysis();
+        EfficiencyAnalysisVO efficiency = dashboardService.queryEfficiencyAnalysis();
         return R.ok(efficiency);
     }
 
@@ -89,7 +89,7 @@ public class DashboardController {
     @GetMapping("/confidence-distribution")
     public R<ConfidenceDistributionVO> getConfidenceDistribution() {
         log.info("获取置信度分布数据");
-        ConfidenceDistributionVO distribution = dashboardService.getConfidenceDistribution();
+        ConfidenceDistributionVO distribution = dashboardService.queryConfidenceDistribution();
         return R.ok(distribution);
     }
 
@@ -101,7 +101,7 @@ public class DashboardController {
     @GetMapping("/file-type-distribution")
     public R<FileTypeDistributionVO> getFileTypeDistribution() {
         log.info("获取文件类型分布");
-        FileTypeDistributionVO distribution = dashboardService.getFileTypeDistribution();
+        FileTypeDistributionVO distribution = dashboardService.queryFileTypeDistribution();
         return R.ok(distribution);
     }
 
@@ -113,7 +113,7 @@ public class DashboardController {
     @GetMapping("/status-distribution")
     public R<StatusDistributionVO> getStatusDistribution() {
         log.info("获取处理状态分布");
-        StatusDistributionVO distribution = dashboardService.getStatusDistribution();
+        StatusDistributionVO distribution = dashboardService.queryStatusDistribution();
         return R.ok(distribution);
     }
 }
